@@ -1,29 +1,127 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include "helper.h"
 using namespace std;
-
-float** computeConv(float inputMatrix[][], float squareKernel[][]) {
-	float conv[m - n + 1][m - n + 1];
-	for (int i = 0; i < m - n + 1; i++) {
-		for (int j = 0; j < m - n + 1; j++) {
+int n,f,p;
+float** computeConv0(float inputMatrix[][n], float squareKernel[][f]) {
+	int d=(n+2*p-f + 1);
+	float conv[d][d];
+	for (int i = 0; i < n+2*p-f + 1; i++) {
+		for (int j = 0; j < n+2*p-f + 1; j++) {
 			conv[i][j] = 0;
-			for (int u = max(0, i − n); u < min(i, n); u++) {
-				for (int v = max(0, j − n); v < min(j, n); v++) {
-					conv[i][j] += inputMatrix[u][v] * squareKernel[i - u + 1][j - v + 1];
+			for (int u = i; u < i+f; u++) {
+				for (int v = j; v < j+f; v++) {
+					conv[i][j] += inputMatrix[u][v] * squareKernel[i+f - u][j+f-v];
 				}
 			}
 		}
 	}
+	cout<<"checkpoint3"<<endl;
+	return (float**)conv;
 }
-
-int main(){
-	float inputMatrix[m][m];
-	float squareKernel[n][n];
-	float** convolution = computeConv(inputMatrix, squareKernel);
-	float paddedInputMatrix[m + n - 1][m + n - 1] = {0}{0};
-	for (int i = (n - 1)/2; i < m + (n - 1)/2; i++) {
-		for (int j = (n - 1)/2; j < m + (n - 1)/2; j++) {
-			paddedInputMatrix[i][j] = inputMatrix[i - (n - 1)/2][j - (n - 1)/2];
+float** computeConv1(float inputMatrix[][n+2*p], float* squareKernel[][f]) {
+	float teoplitz[(n+2*p-f+1)*(n+2*p-f+1)][f*f];
+	for(int i=0;i<(n+2*p-f+1);i++)
+	{
+		int r=(i)/(n+2*p-f+1);
+		r=r*f;
+		int c=i%(n+2*p-f+1);
+		c=c*f;
+		for(int j=0;j<f*f;j++)
+		{
+			r+=j/f;
+			c+=j%f;
+			teoplitz[i][j]=inputMatrix[r][c];
 		}
 	}
-	float** paddedConvolution = computeConv(paddedInputMatrix, squareKernel);
+	float flipedkernal[f*f];
+	for(int i=f-1;i>=0;i--)
+	{
+		for(int j=f-1;j>=0;j--)
+		{
+			int temp=f*(f-i-1)+(f-j-1);
+			flipedkernal[temp]=squareKernel[j][i];
+		}
+	}
+	float conv[n+2*p-f + 1][n+2*p-f + 1];
+	for(int i=0;i<(n+2*p-f+1)*(n+2*p-f+1);i++)
+	{
+		int sum=0;
+		for(int j=0;j<f*f;j++)
+		{
+			sum+=teoplitz[i][j]*flipedkernal[j];
+		}
+		int r=i/(n+2*p-f+1);
+		int c=i%(n+2*p-f+1);
+		conv[r][c]=sum;
+	}
+	return (float**)conv;
+}
+
+int main(int argc,char** argv){
+	p=atoi(argv[2]);
+	n=stoi(argv[4]);
+	f=stoi(argv[6]);
+	char* m1=argv[3];
+	char* m2=argv[5];
+	int mode=stoi(argv[1]);
+	//convolution_formula=0  and as matrix multiplication=1
+	float inputMatrix[n+2*p][n+2*p]={0};
+	float squareKernel[f][f];
+	cout<<"checkpoint1"<<endl;
+	ifstream file;
+	file.open(m1);
+	if (!file) {
+    cerr << "Unable to open file datafile.txt";
+    exit(1);
+	}
+	else
+	{
+		float x;
+		for(int i=p;i<n+p;i++)
+		{
+			for(int j=p;j<n+p;j++)
+			{
+				file >> x;
+				inputMatrix[j][i]=x;
+			}
+		}
+		file.close();
+	}
+	file.open(m2);
+	if (!file) {
+    cerr << "Unable to open file datafile.txt";
+    exit(1);
+	}
+	else
+	{
+		float x;
+		for(int i=0;i<f;i++)
+		{
+			for(int j=0;j<f;j++)
+			{
+				file >> x;
+				squareKernel[j][i]=x;
+			}
+		}
+		file.close();
+	}
+	cout<<"checkpoint2"<<endl;
+	float** convolution;
+	if(mode==0)
+		convolution = computeConv0((float**)inputMatrix,(float**)squareKernel);
+	else if(mode==1)
+		convolution = computeConv1((float**)inputMatrix, (float**)squareKernel);
+
+	int d=(n+2*p-f + 1);
+	for(int i=0;i<d;i++)
+	{
+		for(int j=0;j<d;j++)
+		{
+			cout<<convolution[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+
 }
