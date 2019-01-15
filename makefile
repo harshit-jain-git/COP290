@@ -1,2 +1,10 @@
-all: helper.cpp conv.cpp
-     g++ -o a.out helper.cpp conv.cpp -I.
+CC=g++
+CFLAGS=-I.
+DEPS = helper.h
+OBJ = helper.o conv.o 
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+all: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
