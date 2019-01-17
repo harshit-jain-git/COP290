@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include "helper.h"
+#include<string.h> 
 using namespace std;
 
 float** relu(float** inputMatrix, int m) {
@@ -46,7 +47,8 @@ float** maxpool(float** inputMatrix, int n,int f){
 	{
 		for(int j=0;j<n-f+1;j++)
 		{
-			float max1=0;
+			//cout<<i<<"	"<<j<<endl;
+			float max1=inputMatrix[i][j];
 			for(int u=i;u<i+f;u++)
 			{
 				for(int v=j;v<j+f;v++)
