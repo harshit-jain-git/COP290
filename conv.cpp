@@ -3,216 +3,218 @@
 #include <string.h>
 #include "helper.h"
 using namespace std;
-int n,f,p;
-float** computeConv0(float** inputMatrix, float** squareKernel) {
-	int d=(n+2*p-f + 1);
-	float** conv;
-	conv=new float*[d];
-	for(int i=0;i<d;i++)
-		conv[i]=new float[d];
-	for (int i = 0; i < n+2*p-f + 1; i++) {
-		for (int j = 0; j < n+2*p-f + 1; j++) {
-			conv[i][j] = 0;
-			for (int u = i; u < i+f; u++) {
-				for (int v = j; v < j+f; v++) {
-					conv[i][j] += inputMatrix[u][v] * squareKernel[i+f-1-u][j+f-1-v];
-				}
-			}
-		}
-	}
-	return conv;
-}
-float** computeConv1(float** inputMatrix, float** squareKernel) {
-	float teoplitz[(n+2*p-f+1)*(n+2*p-f+1)][f*f];
-	for(int i=0;i<(n+2*p-f+1)*(n+2*p-f+1);i++)
-	{
-		int r=(i)/(n+2*p-f+1);
-		int c=i%(n+2*p-f+1);
-		for(int j=0;j<f*f;j++)
-		{
-			int r1=r+j/f;
-			int c1=c+j%f;
-			teoplitz[i][j]=inputMatrix[r1][c1];
-		}
-	}
-	float flipedkernal[f*f];
-	int temp=0;
-	for(int i=f-1;i>=0;i--)
-	{
-		for(int j=f-1;j>=0;j--)
-		{
-			flipedkernal[temp]=squareKernel[i][j];
-			temp++;
-		}
-	}
-	int d=(n+2*p-f + 1);
-	float** conv;
-	conv=new float*[d];
-	for(int i=0;i<d;i++)
-		conv[i]=new float[d];
-	for(int i=0;i<(n+2*p-f+1)*(n+2*p-f+1);i++)
-	{
-		float sum=0;
-		for(int j=0;j<f*f;j++)
-		{
-			sum+=teoplitz[i][j]*flipedkernal[j];
-		}
-		int r=i/(n+2*p-f+1);
-		int c=i%(n+2*p-f+1);
-		conv[r][c]=sum;
-	}
-	return conv;
-}
 
-int main(int argc,char** argv){
+
+int main(int argc,char** argv) {
+	if (argc < 2) {
+		cerr << "Invalid usage!" << endl;
+		cerr << "Refer to README file for correct usage." << endl;
+		exit(1);
+	}
+
 	char* mode=argv[1];
-	char* m1;
-	char* m2;
-	float **inputMatrix;
-	float **squareKernel;
-	float * inputvector;
-	if(strcmp(mode,"sigmoid")==0||strcmp(mode,"softmax")==0)
-	{
-		m1=argv[2];
-		n=stoi(argv[3]);
-		inputvector = new float [n];
-		ifstream file;
-		file.open(m1);
-		if (!file) {
-	    cerr << "Unable to open file datafile.txt";
-	    exit(1);
+	if (strcmp(mode, "conv0") == 0 || strcmp(mode, "conv1") == 0) {
+		int padding_size;
+		int input_matrix_size;
+		int kernel_size;
+		float** input_matrix;
+		float** squareKernel;
+		float** A;
+		if (argc != 7) {
+			cerr << "Input format error!" << endl;
+			cerr << "Usage: ./all " << mode << " padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size" << endl;
+			exit(1);
 		}
-		else
-		{
-			float x;
-			for(int i=0;i<n;i++)
-			{
-				file >> x;
-				inputvector[i]=x;
+		padding_size = stoi(argv[2]);
+		char* input_file = argv[3];
+		input_matrix_size = stoi(argv[4]);
+		char* kernel_file = argv[5];
+		kernel_size = stoi(argv[6]);
+
+		ifstream file;
+		file.open(input_file);
+		if (!file) {
+			cerr << "Unable to open input matrix file" << endl;
+			exit(1);
+		} else {
+			int n = input_matrix_size + 2*padding_size;
+			input_matrix = new float*[n];
+			for (int i = 0; i < n; i++) {
+				input_matrix[i] = new float[n];
 			}
-			file.close();
-		}
-	}
-	else if(strcmp(mode,"conv0")==0||strcmp(mode,"conv1")==0||strcmp(mode,"avgpool")==0||strcmp(mode,"maxpool")==0||strcmp(mode,"tanh")==0||strcmp(mode,"relu")==0)
-	{
-		p=atoi(argv[2]);
-		m1=argv[3];
-		n=stoi(argv[4]);	
-		int n1=n+2*p;
-		inputMatrix = new float *[n1];
-		for(int i = 0; i <n1; i++)
-	    inputMatrix[i] = new float[n1];
-		ifstream file;
-		file.open(m1);
-		if (!file) {
-	    cerr << "Unable to open file datafile.txt";
-	    exit(1);
-		}
-		else
-		{
+
 			float x;
-			for(int i=p;i<n+p;i++)
-			{
-				for(int j=p;j<n+p;j++)
-				{
+			for (int i = padding_size; i < input_matrix_size + padding_size; i++) {
+				for (int j = padding_size; j < input_matrix_size + padding_size; j++) {
 					file >> x;
-					inputMatrix[j][i]=x;
+					input_matrix[j][i] = x;
 				}
 			}
 			file.close();
+			printMatrix(input_matrix, n);
+			cout << endl;
 		}
-		if(strcmp(mode,"conv0")==0||strcmp(mode,"conv1")==0)
-		{
-			m2=argv[5];
-			f=stoi(argv[6]);
-			squareKernel = new float *[f];
-			for(int i = 0; i <f; i++)
-	    		squareKernel[i] = new float[f];
-			file.open(m2);
-			if (!file) {
-			    cerr << "Unable to open file datafile.txt";
-			    exit(1);
+
+		file.open(kernel_file);
+		if (!file) {
+			cerr << "Unable to open kernel matrix file" << endl;
+			exit(1);
+		} else {
+			int n = kernel_size;
+			squareKernel = new float*[n];
+			for (int i = 0; i < n; i++) {
+				squareKernel[i] = new float[n];
 			}
-			else
-			{
-				float x;
-				for(int i=0;i<f;i++)
-				{
-					for(int j=0;j<f;j++)
-					{
-						file >> x;
-						squareKernel[j][i]=x;
-					}
+
+			float x;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					file >> x;
+					squareKernel[j][i] = x;
 				}
-				file.close();
 			}
+			file.close();
+			printMatrix(squareKernel, n);
+			cout << endl;
 		}
-		else if(strcmp(mode,"maxpool")==0||strcmp(mode,"avgpool")==0)
-		{
-			f=stoi(argv[5]);
+
+		if (strcmp(mode, "conv0") == 0) {
+			A = computeConv0(input_matrix, squareKernel, input_matrix_size, padding_size, kernel_size);
+		} else {
+			A = computeConv1(input_matrix, squareKernel, input_matrix_size, padding_size, kernel_size);
 		}
+		int dim = input_matrix_size + 2*padding_size - kernel_size + 1;
+		printMatrix(A, dim);
+
+	} else if (strcmp(mode, "avgpool") == 0 || strcmp(mode, "maxpool") == 0) {
+		int padding_size;
+		int input_matrix_size;
+		float** input_matrix;
+		int filter_size;
+		float** A;
+		if (argc != 6) {
+			cerr << "Input format error!" << endl;
+			cerr << "Usage: ./all " << mode << " padding_size input_matrix_file input_matrix_size filter_size" << endl;
+			exit(1);
+		}
+		padding_size = stoi(argv[2]);
+		char* input_file = argv[3];
+		input_matrix_size = stoi(argv[4]);
+		filter_size = stoi(argv[5]);
+
+		ifstream file;
+		file.open(input_file);
+
+		if (!file) {
+			cerr << "Unable to open input matrix file" << endl;
+			exit(1);
+		} else {
+			int n = input_matrix_size + 2*padding_size;
+			input_matrix = new float*[n];
+			for (int i = 0; i < n; i++) {
+				input_matrix[i] = new float[n];
+			}
+
+			float x;
+			for (int i = padding_size; i < input_matrix_size + padding_size; i++) {
+				for (int j = padding_size; j < input_matrix_size + padding_size; j++) {
+					file >> x;
+					input_matrix[j][i] = x;
+				}
+			}
+			file.close();
+			if (strcmp(mode, "avgpool") == 0) {
+				A = avgpool(input_matrix, n, filter_size);
+			} else {
+				A = maxpool(input_matrix, n, filter_size);
+			}
+
+			int dim = input_matrix_size + 2*padding_size - filter_size + 1;
+			printMatrix(A, dim);
+		}
+	} else if (strcmp(mode, "relu") == 0 || strcmp(mode, "tanh") == 0) {
+		int input_matrix_size;
+		float** input_matrix;
+		float** A;
+		if (argc != 4) {
+			cerr << "Input format error!" << endl;
+			cerr << "Usage: ./all " << mode << " input_matrix_file input_matrix_size" << endl;
+			exit(1);
+		}
+		char* input_file = argv[2];
+		input_matrix_size = stoi(argv[3]);
+
+		ifstream file;
+		file.open(input_file);
+
+		if (!file) {
+			cerr << "Unable to open input matrix file" << endl;
+			exit(1);
+		} else {
+			int n = input_matrix_size;
+			input_matrix = new float*[n];
+			for (int i = 0; i < n; i++) {
+				input_matrix[i] = new float[n];
+			}
+
+			float x;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					file >> x;
+					input_matrix[j][i] = x;
+				}
+			}
+			file.close();
+			if (strcmp(mode, "relu") == 0) {
+				A = relu(input_matrix, n);
+			} else {
+				A = tanh(input_matrix, n);
+			}
+
+			printMatrix(A, n);
+		}
+	} else if (strcmp(mode, "sigmoid") == 0 || strcmp(mode, "softmax") == 0) {
+		float* input_vector;
+		int input_vector_size;
+		float* A;
+		if (argc != 4) {
+			cerr << "Input format error!" << endl;
+			cerr << "Usage: ./all " << mode << " input_vector_file input_vector_size" << endl;
+			exit(1);
+		}
+
+		char* input_file = argv[2];
+		input_vector_size = stoi(argv[3]);
+
+		ifstream file;
+		file.open(input_file);
+
+		if (!file) {
+			cerr << "Unable to open input vector file" << endl;
+			exit(1);
+		} else {
+			int n = input_vector_size;
+			input_vector = new float[n];
+			
+			float x;
+			for (int i = 0; i < n; i++) {
+				file >> x;
+				input_vector[i] = x;
+			}
+
+			file.close();
+			if (strcmp(mode, "sigmoid") == 0) {
+				A = sigmoid(input_vector, n);
+			} else {
+				A = softmax(input_vector, n);
+			}
+			printVector(A, n);
+		}
+	} else {
+		cerr << "Invalid operation" << endl;
+		cerr << "Use one of the following operations: conv0, conv1, avgpool, maxpool, relu, tanh, sigmoid, softmax" << endl;
+		exit(1);
 	}
 
-	float** result;
-	float* result2;
-	if(strcmp(mode,"conv0")==0)
-		result = computeConv0(inputMatrix,squareKernel);
-	else if(strcmp(mode,"conv1")==0)
-		result = computeConv1(inputMatrix, squareKernel);
-	else if(strcmp(mode,"avgpool")==0)
-		result=avgpool(inputMatrix,n+2*p,f);
-	else if(strcmp(mode,"maxpool")==0)
-		result=maxpool(inputMatrix,n+2*p,f);
-	else if(strcmp(mode,"relu")==0)
-		result=relu(inputMatrix,n+2*p);
-	else if(strcmp(mode,"tanh")==0)
-		result=tanh(inputMatrix,n+2*p);
-	else if(strcmp(mode,"sigmoid")==0)
-		result2=sigmoid(inputvector,n);
-	else if(strcmp(mode,"softmax")==0)
-		result2=softmax(inputvector,n);
-	int d;
-	if(strcmp(mode,"conv0")==0||strcmp(mode,"conv1")==0||strcmp(mode,"avgpool")==0||strcmp(mode,"maxpool")==0)
-	{
-		d=(n+2*p-f + 1);
-		for(int i=0;i<d;i++)
-		{
-			for(int j=0;j<d;j++)
-			{
-				cout<<result[i][j]<<" ";
-			}
-			cout<<endl;
-		}
-	}
-	else if(strcmp(mode,"tanh")==0||strcmp(mode,"relu")==0)
-	{
-		d=(n+2*p);
-		for(int i=0;i<d;i++)
-		{
-			for(int j=0;j<d;j++)
-			{
-				cout<<result[i][j]<<" ";
-			}
-			cout<<endl;
-		}
-	}
-	else if(strcmp(mode,"sigmoid")==0||strcmp(mode,"softmax")==0)
-	{
-		d=n;
-		for(int i=0;i<d;i++)
-		{
-			cout<<result2[i]<<" ";
-		}
-		cout<<endl;
-	}
-	// cout<<endl;
-	// 	for(int i=0;i<d;i++)
-	// 	{
-	// 		for(int j=0;j<d;j++)
-	// 		{
-	// 			cout<<inputMatrix[i][j]<<" ";
-	// 		}
-	// 		cout<<endl;
-	// 	}
 	return 0;
 }

@@ -20,14 +20,14 @@ Usage:
 	./all conv1 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size
 
 relu: Activates the input matrix using Rectified Linear Unit function.
-Output matrix dimensions = [(n + 2p)x(n + 2p)]
+Output matrix dimensions = [nxn]
 Usage:
-	./all relu padding_size input_matrix_file input_matrix_size
+	./all relu input_matrix_file input_matrix_size
 
 tanh: Activates the input matrix using hyperbolic tan function.
-Output matrix dimensions = [(n + 2p)x(n + 2p)]
+Output matrix dimensions = [nxn]
 Usage:
-	./all tanh padding_size input_matrix_file input_matrix_size
+	./all tanh input_matrix_file input_matrix_size
 
 maxpool: Evaluates the maxpool matrix for a given input matrix. We assume the filter matrix to be a square matrix of dimensions [fxf].
 Output matrix dimensions = [(n + 2p - f + 1)x(n + 2p - f + 1)]
