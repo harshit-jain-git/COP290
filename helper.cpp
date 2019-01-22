@@ -2,12 +2,15 @@
 #include <math.h>
 #include "helper.h"
 #include<string.h> 
+#include "mkl.h"
 using namespace std;
 
+#define MAX_THREAD 4
+
 // Function to print matrix
-void printMatrix(float** matrix, int dim) {
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
+void printMatrix(float** matrix, int dim1, int dim2) {
+	for (int i = 0; i < dim1; i++) {
+		for (int j = 0; j < dim2; j++) {
 			cout << matrix[i][j] << " ";
 		}
 		cout << endl;

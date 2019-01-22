@@ -1,4 +1,4 @@
-void printMatrix(float** matrix, int dim);
+void printMatrix(float** matrix, int dim1, int dim2);
 void printVector(float* vector, int dim);
 float** computeConv0(float** inputMatrix, float** squareKernel, int n, int p, int f);
 float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, int f);

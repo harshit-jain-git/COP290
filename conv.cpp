@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include "helper.h"
+
 using namespace std;
 
 
@@ -51,7 +52,7 @@ int main(int argc,char** argv) {
 				}
 			}
 			file.close();
-			printMatrix(input_matrix, n);
+			printMatrix(input_matrix, n, n);
 			cout << endl;
 		}
 
@@ -74,7 +75,7 @@ int main(int argc,char** argv) {
 				}
 			}
 			file.close();
-			printMatrix(squareKernel, n);
+			printMatrix(squareKernel, n, n);
 			cout << endl;
 		}
 
@@ -84,7 +85,7 @@ int main(int argc,char** argv) {
 			A = computeConv1(input_matrix, squareKernel, input_matrix_size, padding_size, kernel_size);
 		}
 		int dim = input_matrix_size + 2*padding_size - kernel_size + 1;
-		printMatrix(A, dim);
+		printMatrix(A, dim, dim);
 
 	} else if (strcmp(mode, "avgpool") == 0 || strcmp(mode, "maxpool") == 0) {
 		int padding_size;
@@ -130,7 +131,7 @@ int main(int argc,char** argv) {
 			}
 
 			int dim = input_matrix_size + 2*padding_size - filter_size + 1;
-			printMatrix(A, dim);
+			printMatrix(A, dim, dim);
 		}
 	} else if (strcmp(mode, "relu") == 0 || strcmp(mode, "tanh") == 0) {
 		int input_matrix_size;
@@ -171,7 +172,7 @@ int main(int argc,char** argv) {
 				A = tanh(input_matrix, n);
 			}
 
-			printMatrix(A, n);
+			printMatrix(A, n, n);
 		}
 	} else if (strcmp(mode, "sigmoid") == 0 || strcmp(mode, "softmax") == 0) {
 		float* input_vector;
