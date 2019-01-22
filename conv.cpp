@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string.h>
 #include "helper.h"
+#include "cblas1.h"
+#include "mkl1.h"
+#include "pthread1.h"
 
 using namespace std;
 
@@ -15,13 +18,14 @@ int main(int argc,char** argv) {
 
 	char* mode=argv[1];
 	if (strcmp(mode, "conv0") == 0 || strcmp(mode, "conv1") == 0) {
+
 		int padding_size;
 		int input_matrix_size;
 		int kernel_size;
 		float** input_matrix;
 		float** squareKernel;
 		float** A;
-		if (argc != 7) {
+		if (argc < 7) {
 			cerr << "Input format error!" << endl;
 			cerr << "Usage: ./all " << mode << " padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size" << endl;
 			exit(1);
@@ -78,8 +82,48 @@ int main(int argc,char** argv) {
 			printMatrix(squareKernel, n, n);
 			cout << endl;
 		}
+		if(argc==8)
+		{
+			//row major teoplitz T
+			int d=(input_matrix_size + 2*padding_size - kernel_size + 1);
+			int f=kernel_size;
 
-		if (strcmp(mode, "conv0") == 0) {
+			float* T=rmteoplitz(input_matrix,input_matrix_size+2*padding_size,kernel_size);
+			//flipped linearized kernel F
+			float* F = flippedkernel(squareKernel, f);
+
+			char* mode2=argv[7];
+			//rm
+			float* C=new float[d*d];
+			if(strcmp(mode2,"mkl") == 0)
+			{
+				double t=mkl_conv(T,F,C,d*d,f*f,1);
+				print("C with mkl operation",C,d,d);
+				cout<<"time taken in microseconds: "<< t << endl;
+				return 0;
+			}
+			else if(strcmp(mode2,"openblas") == 0)
+			{
+				double t=openblas_conv(T,F,C,d*d,f*f,1);
+				print("C with openblas operation",C,d,d);
+				cout<<"time taken in microseconds: "<< t << endl;
+				return 0;
+			}
+			else if(strcmp(mode2,"pthread") == 0)
+			{
+				double t=pthread_conv(T,F,C,d*d,f*f,1);
+				print("C with pthreads operation",C,d,d);
+				cout<<"time taken in microseconds: "<< t << endl;
+				return 0;
+			}
+			else
+			{
+				cout<<"last argument has to be one of these: {'mkl','openblas','pthread'}"<<endl;
+				return 0;
+			}
+
+		}
+		else if (strcmp(mode, "conv0") == 0) {
 			A = computeConv0(input_matrix, squareKernel, input_matrix_size, padding_size, kernel_size);
 		} else {
 			A = computeConv1(input_matrix, squareKernel, input_matrix_size, padding_size, kernel_size);

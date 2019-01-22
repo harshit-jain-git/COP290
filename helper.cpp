@@ -1,13 +1,23 @@
 #include <iostream>
 #include <math.h>
 #include "helper.h"
-#include<string.h> 
+#include <string.h> 
 #include "mkl.h"
 using namespace std;
 
-#define MAX_THREAD 4
 
 // Function to print matrix
+void print(const char * name, const float* matrix, int row, int column)
+ {
+   printf("Matrix %s has %d rows and %d columns:\n", name, row, column);
+   for (int i = 0; i < row; i++){
+     for (int j = 0; j < column; j++){
+       printf("%.3f ", matrix[i*column+j]);
+     }
+     printf("\n");
+   }
+   printf("\n");
+ }
 void printMatrix(float** matrix, int dim1, int dim2) {
 	for (int i = 0; i < dim1; i++) {
 		for (int j = 0; j < dim2; j++) {
@@ -46,7 +56,40 @@ float** computeConv0(float** inputMatrix, float** squareKernel, int n, int p, in
 	}
 	return conv;
 }
-
+float* rmteoplitz(float** inputMatrix, int n,int f)
+{
+	int d=(n-f+1);
+	float* T=new float[d*d*f*f];
+	for(int i = 0; i < d*d; i++)
+	{
+		int r = i/d;
+		int c = i % d;
+		for(int j = 0; j < f*f; j++)
+		{
+			int r1 = r + j/f;
+			int c1 = c + j%f;
+			T[i*f*f+j] = inputMatrix[r1][c1];
+		}
+	}
+	return T;
+}
+float* flippedkernel(float** squareKernel, int f)
+{
+	float* F;
+	int d=f*f;
+	F=new float[d];
+	int index = 0;
+	// Constructing the flipped kernel
+	for(int i = f - 1; i >= 0; i--)
+	{
+		for(int j = f - 1; j >= 0; j--)
+		{
+			F[index] = squareKernel[i][j];
+			index++;
+		}
+	}
+	return F;
+}
 float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, int f) {
 	float toeplitz[(n + 2*p - f + 1)*(n + 2*p - f + 1)][f*f];
 	// Constructing the Toeplitz Matrix
@@ -62,14 +105,14 @@ float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, in
 		}
 	}
 
-	float flippedkernal[f*f];
+	float flippedkernel[f*f];
 	int index = 0;
 	// Constructing the flipped kernel
 	for(int i = f - 1; i >= 0; i--)
 	{
 		for(int j = f - 1; j >= 0; j--)
 		{
-			flippedkernal[index] = squareKernel[i][j];
+			flippedkernel[index] = squareKernel[i][j];
 			index++;
 		}
 	}
@@ -89,7 +132,7 @@ float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, in
 		float sum = 0;
 		for(int j = 0;j < f*f; j++)
 		{
-			sum += toeplitz[i][j]*flippedkernal[j];
+			sum += toeplitz[i][j]*flippedkernel[j];
 		}
 		int r = i/(n + 2*p - f + 1);
 		int c = i%(n + 2*p - f + 1);
