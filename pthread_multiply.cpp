@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int MAX_THREAD = 8;
+const int MAX_THREAD = 4;
 int row = 0;
 float* input_matrix_1;
 float* input_matrix_2;
