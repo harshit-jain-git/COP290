@@ -1,9 +1,10 @@
-MKLROOT = /opt/intel/mkl
+MKLROOT = /home/co/intel/mkl
 CC=g++
-CFLAGS= -pthread -DMKL_ILP64 -m64 -I/opt/intel/mkl/include -I.
+CFLAGS= -pthread -DMKL_ILP64 -m64 -I$(MKLROOT)/include -I.
 LFLAGS=  -lblas -Wl,--start-group $(MKLROOT)/lib/intel64/libmkl_intel_ilp64.a $(MKLROOT)/lib/intel64/libmkl_gnu_thread.a $(MKLROOT)/lib/intel64/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl 
-DEPS = helper.h mkl1.h cblas1.h pthread1.h
-OBJ = helper.o conv.o pthread1.o mkl1.o cblas1.o
+DEPS = helper.h pthread_multiply.h mkl_multiply.h cblas_multiply.h
+OBJ = helper.o conv.o pthread_multiply.o mkl_multiply.o cblas_multiply.o
+OBJ_2 = pthread_multiply.o mkl_multiply.o cblas_multiply.o performance.o
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -11,5 +12,5 @@ OBJ = helper.o conv.o pthread1.o mkl1.o cblas1.o
 all: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LFLAGS)
 
-# pthread: pthread.o
-# 	$(CC) -o $@ $^ $(CFLAGS) $(LFLAGS)
+performance: $(OBJ_2)
+	$(CC) -o $@ $^ $(CFLAGS) $(LFLAGS)

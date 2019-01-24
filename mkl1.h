@@ -1,1 +1,0 @@
-double mkl_conv(float* A,float* B,float* C,int m,int l,int n);

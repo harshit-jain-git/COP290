@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string.h>
 #include "helper.h"
-#include "cblas1.h"
-#include "mkl1.h"
-#include "pthread1.h"
+#include "cblas_multiply.h"
+#include "mkl_multiply.h"
+#include "pthread_multiply.h"
 
 using namespace std;
 
@@ -97,21 +97,21 @@ int main(int argc,char** argv) {
 			float* C=new float[d*d];
 			if(strcmp(mode2,"mkl") == 0)
 			{
-				double t=mkl_conv(T,F,C,d*d,f*f,1);
+				double t=mkl_multiply(T,F,C,d*d,f*f,1);
 				print("C with mkl operation",C,d,d);
 				cout<<"time taken in microseconds: "<< t << endl;
 				return 0;
 			}
 			else if(strcmp(mode2,"openblas") == 0)
 			{
-				double t=openblas_conv(T,F,C,d*d,f*f,1);
+				double t=cblas_multiply(T,F,C,d*d,f*f,1);
 				print("C with openblas operation",C,d,d);
 				cout<<"time taken in microseconds: "<< t << endl;
 				return 0;
 			}
 			else if(strcmp(mode2,"pthread") == 0)
 			{
-				double t=pthread_conv(T,F,C,d*d,f*f,1);
+				double t=pthread_multiply(T,F,C,d*d,f*f,1);
 				print("C with pthreads operation",C,d,d);
 				cout<<"time taken in microseconds: "<< t << endl;
 				return 0;

@@ -2,22 +2,22 @@
 #include <math.h>
 #include "helper.h"
 #include <string.h> 
-#include "mkl.h"
 using namespace std;
 
 
 // Function to print matrix
 void print(const char * name, const float* matrix, int row, int column)
- {
-   printf("Matrix %s has %d rows and %d columns:\n", name, row, column);
-   for (int i = 0; i < row; i++){
-     for (int j = 0; j < column; j++){
-       printf("%.3f ", matrix[i*column+j]);
-     }
-     printf("\n");
-   }
-   printf("\n");
- }
+{
+    printf("Matrix %s has %d rows and %d columns:\n", name, row, column);
+    for (int i = 0; i < row; i++){
+      for (int j = 0; j < column; j++){
+        printf("%.3f ", matrix[i*column+j]);
+      }
+      printf("\n");
+    }
+    printf("\n");
+}
+
 void printMatrix(float** matrix, int dim1, int dim2) {
 	for (int i = 0; i < dim1; i++) {
 		for (int j = 0; j < dim2; j++) {

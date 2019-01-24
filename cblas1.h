@@ -1,1 +1,0 @@
-double openblas_conv(float* A,float* B,float* C,int m,int l,int n);
