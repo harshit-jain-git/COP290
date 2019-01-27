@@ -11,12 +11,17 @@
 
 Implemented Functions - 
 **computeConv0**: Evaluates convolution of a square matrix with a given square kernel using normal convolution method.
+
 Output matrix dimensions = [(n + 2p - f + 1)x(n + 2p - f + 1)]
+
 Usage:
+
 	`./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size`
 
 **computeConv1**: Evalutes convolution of a square matrix with a given square kernel by multiplying the Teoplitz matrix and the flipped kernel.
+
 Output matrix dimensions = [(n + 2p - f + 1)x(n + 2p - f + 1)]
+
 Usage:
 	`./all conv1 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size`
 
@@ -63,3 +68,5 @@ Usage:
 	 make performance
 	 gnuplot plot.plt
 ```
+
+![Latency Comparison plot](https://github.com/harshitjain1371999/COP290/plot.png)
