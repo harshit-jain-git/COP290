@@ -1,6 +1,7 @@
 ## Image Processing Library
 ### Compilation:
-	make all
+	Change the value of MKLROOT variable in makefile to your mkl library folder. 
+	Open a terminal in the repo directory and type: 	make all
 
 ### Assumption:
 	Stride = 1
@@ -49,9 +50,9 @@
 **Available methods for Matrix multiplication: ['MKL', 'OPENBLAS', 'PThreads']**  
 *Usage*:
 ```
-   ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size mkl
-   ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size openblas
-   ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size pthread
+./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size mkl
+./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size openblas
+./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size pthread
 ```
 *for comparing matrix multiplication performance use:*
 ```
