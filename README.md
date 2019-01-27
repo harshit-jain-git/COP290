@@ -1,7 +1,7 @@
 ## Image Processing Library
 ### Compilation:
 	Change the value of MKLROOT variable in makefile to your mkl library folder. 
-	Open a terminal in the repo directory and type: 	make all
+	Open a terminal in the repo directory and type: make all
 
 ### Assumption:
 	Stride = 1
