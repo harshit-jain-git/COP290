@@ -1,13 +1,13 @@
 #include<iostream>
 #include<fstream>
 #include<time.h>
-#include<math.h>
+#include <math.h>
 #include "cblas_multiply.h"
 #include "mkl_multiply.h"
 #include "pthread_multiply.h"
 
-#define L 8192
-#define samples 10
+#define L 16384
+#define samples 20
 
 using namespace std;
 
@@ -48,20 +48,20 @@ int main(int argc, char** argv) {
 		pthread_mean = pthread_mean/samples;
 		mkl_mean = mkl_mean/samples;
 		cblas_mean = cblas_mean/samples;
-		for(int j=0;j<samples;j++)
+		for(int j = 0; j < samples; j++)
 		{
-			pthread_sd+=pow((pthread_time[j]-pthread_mean),2);
-			mkl_sd+=pow((mkl_time[j]-mkl_mean),2);
-			cblas_sd+=pow((cblas_time[j]-cblas_mean),2);
+			pthread_sd += pow((pthread_time[j] - pthread_mean), 2);
+			mkl_sd += pow((mkl_time[j] - mkl_mean), 2);
+			cblas_sd += pow((cblas_time[j] - cblas_mean), 2);
 		}
 		pthread_sd = pthread_sd/samples;
-		pthread_sd=sqrt(pthread_sd);
+		pthread_sd = sqrt(pthread_sd);
 		mkl_sd = mkl_sd/samples;
-		mkl_sd=sqrt(mkl_sd);
+		mkl_sd = sqrt(mkl_sd);
 		cblas_sd = cblas_sd/samples;
-		cblas_sd=sqrt(cblas_sd);
-		if(i>4)
-			file << pthread_mean<<" " << pthread_sd<< " "<< mkl_mean<<" " << mkl_sd<< " "<< cblas_mean<<" " << cblas_sd << endl;
+		cblas_sd = sqrt(cblas_sd);
+		if(i > 4)
+			file << pthread_mean << " " << pthread_sd << " " << mkl_mean << " " << mkl_sd << " " << cblas_mean << " " << cblas_sd << endl;
 	}
 	file.close();
 	return 0;
