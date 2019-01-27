@@ -48,7 +48,8 @@
 	`./all softmax input_vector_file input_vector_size`
 
 **Available methods for Matrix multiplication: ['MKL', 'OpenBLAS', 'pthread']**  
-*Usage*:```
+*Usage*:
+```
 ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size mkl
 ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size openblas
 ./all conv0 padding_size input_matrix_file input_matrix_size kernel_file kernel_matrix_size pthread
