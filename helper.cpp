@@ -2,6 +2,7 @@
 #include <math.h>
 #include "helper.h"
 #include <string.h> 
+#include "mkl_multiply.h"
 using namespace std;
 
 
@@ -135,7 +136,7 @@ float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 	return T;
 }
 float**  conv3d(float*** inputMatrix, float** squareKernel, int n, int l, int f,int b) {
-	float* T=teoplitz3d(input_matrix,n,l,f);
+	float* T=teoplitz3d(inputMatrix,n,l,f);
 	float* F = kernel3d(squareKernel, f,l);
 	int d=n-f+1;
 	float* C=new float[d*d];
@@ -258,7 +259,7 @@ float** maxpool(float** inputMatrix, int n, int f){
 	return A;
 }
 
-float** avgpool(float** inputMatrix, int n, int f, int s){
+float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 	int m = (n - f)/s + 1;
 	float** A = new float*[m];
 	for(int i = 0; i < m; i++)
