@@ -204,6 +204,7 @@ float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, in
 
 float** relu(float** inputMatrix, int n) {
 	float** A;
+
 	A = new float*[n];
 	for(int i = 0; i < n; i++)
 		A[i] = new float[n];
@@ -262,11 +263,12 @@ float** maxpool(float** inputMatrix, int n, int f){
 float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 	int m = (n - f)/s + 1;
 	float** A = new float*[m];
+	int index_1 = 0, index_2 = 0;
 	for(int i = 0; i < m; i++)
 		A[i] = new float[m];
-	for(int i = 0; i < n - f + 1; i=i+s)
+	for(int i = 0; i < n - f + 1; i=i+s, index_1++)
 	{
-		for(int j = 0; j < n - f + 1; j=j+s)
+		for(int j = 0; j < n - f + 1; j=j+s, index_2++)
 		{
 			double sum = 0;
 			for(int u = i; u < i + f; u++)
@@ -276,7 +278,7 @@ float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 					sum += inputMatrix[u][v];
 				}
 			}
-			A[i][j] = (float)(sum/(f*f));
+			A[index_1][index_2] = (float)(sum/(f*f));
 		}
 	}
 	return A;
