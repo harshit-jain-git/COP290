@@ -11,3 +11,4 @@ float* sigmoid(float* inputVector,int n);
 float* softmax(float* inputVector,int n);
 float* flippedkernel(float** squareKernel,int f);
 float* rmteoplitz(float** inputMatrix, int n,int f);
+float**  conv(float** inputMatrix, float** squareKernel, int n, int p, int f);

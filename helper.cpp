@@ -90,6 +90,39 @@ float* flippedkernel(float** squareKernel, int f)
 	}
 	return F;
 }
+float* lkernel(float** squareKernel, int f)
+{
+	float* F;
+	int d=f*f;
+	F=new float[d];
+	int index = 0;
+	// Constructing the flipped kernel
+	for(int i = 0; i <=f-1; i++)
+	{
+		for(int j = 0; j <=f-1; j++)
+		{
+			F[index] = squareKernel[i][j];
+			index++;
+		}
+	}
+	return F;
+}
+float**  conv(float** inputMatrix, float** squareKernel, int n, int p, int f) {
+	float* T=rmteoplitz(input_matrix,n+2*p,f);
+	float* F = lkernel(squareKernel, f);
+	int d=n+2*p-f+1;
+	float* C=new float[d*d];
+	double t=mkl_multiply(T,F,C,d*d,f*f,1);
+	float** result=new float*[d];
+	for(int i=0;i<d;i++)
+		result[i]=new float[d];
+	for(int i=0;i<d*d;i++)
+	{
+		int r=i/d,c=i%d;
+		result[r][c]=C[i];
+	}
+	return result;
+}
 float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, int f) {
 	float toeplitz[(n + 2*p - f + 1)*(n + 2*p - f + 1)][f*f];
 	// Constructing the Toeplitz Matrix
@@ -198,14 +231,14 @@ float** maxpool(float** inputMatrix, int n, int f){
 	return A;
 }
 
-float** avgpool(float** inputMatrix, int n, int f){
-	int m = n - f + 1;
+float** avgpool(float** inputMatrix, int n, int f, int s){
+	int m = (n - f)/s + 1;
 	float** A = new float*[m];
 	for(int i = 0; i < m; i++)
 		A[i] = new float[m];
-	for(int i = 0; i < n - f + 1; i++)
+	for(int i = 0; i < n - f + 1; i=i+s)
 	{
-		for(int j = 0; j < n - f + 1; j++)
+		for(int j = 0; j < n - f + 1; j=j+s)
 		{
 			double sum = 0;
 			for(int u = i; u < i + f; u++)
