@@ -27,7 +27,10 @@ int main(int argc, char** argv) {
 		Input_image[0][i] = new float[N];
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			file >> Input_image[0][j][i];	
+			float a;
+			file >> a;
+			a = 1.0 - a/255;
+			Input_image[0][i][j] = a;	
 		}
 	}
 	cout << "Entering Layer 1" << endl;
@@ -57,13 +60,15 @@ int main(int argc, char** argv) {
 		}
 	}
 
+	printMatrix(filter_1[0], M_1, M_1);
+
 	for (int i = 0; i < channels_1; i++)
 		filter_file >> bias_1[i];
 
 	output_layer_1 = new float**[channels_1];
 	for (int i = 0; i < channels_1; i++) {
 		output_layer_1[i] = conv3d(Input_image, filter_1[i], N, 1, M_1, bias_1[i]);
-		printMatrix(output_layer_1[i], output_layer_1_size, output_layer_1_size);
+		//printMatrix(output_layer_1[i], output_layer_1_size, output_layer_1_size);
 	}
 	filter_file.close();
 
@@ -78,6 +83,7 @@ int main(int argc, char** argv) {
 	cout << "Indicator\n";
 	for (int i = 0; i < channels_2; i++) {
 		output_layer_2[i] = avgpool(output_layer_1[i], output_layer_1_size, M_2, 2);
+		printMatrix(output_layer_2[i], output_layer_2_size, output_layer_2_size);
 	}
 
 	cout << "Entering Layer 3" << endl;
@@ -112,6 +118,7 @@ int main(int argc, char** argv) {
 	output_layer_3 = new float**[channels_3];
 	for (int i = 0; i < channels_3; i++) {
 		output_layer_3[i] = conv3d(output_layer_2, filter_3[i], output_layer_2_size, channels_2, M_1, bias_3[i]);
+		printMatrix(output_layer_3[i], output_layer_3_size, output_layer_3_size);
 	}
 	
 	filter_file.close();
@@ -126,6 +133,7 @@ int main(int argc, char** argv) {
 	output_layer_4 = new float**[channels_4];
 	for (int i = 0; i < channels_4; i++) {
 		output_layer_4[i] = avgpool(output_layer_3[i], output_layer_3_size, M_2, 2);
+		printMatrix(output_layer_4[i], output_layer_4_size, output_layer_4_size);
 	}
 
 	cout << "Entering Layer 5" << endl;
@@ -161,6 +169,7 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < channels_5; i++) {
 		output_layer_5[i] = conv3d(output_layer_4, filter_5[i], output_layer_4_size, channels_4, M_3, bias_5[i]);
 		output_layer_5[i] = relu(output_layer_5[i], output_layer_5_size);
+		printMatrix(output_layer_5[i], output_layer_5_size, output_layer_5_size);
 	}
 
 	filter_file.close();
@@ -197,6 +206,7 @@ int main(int argc, char** argv) {
 	output_layer_6 = new float**[channels_6];
 	for (int i = 0; i < channels_6; i++) {
 		output_layer_6[i] = conv3d(output_layer_5, filter_6[i], output_layer_6_size, channels_5, M_4, bias_6[i]);
+		printMatrix(output_layer_6[i], output_layer_6_size, output_layer_6_size);
 	}
 
 	float* output = new float[10];
@@ -209,7 +219,7 @@ int main(int argc, char** argv) {
 
 	// Print the result
 	for (int i = 0; i < 10; i++) {
-		cout << "Probability of 0: " << output[i] << endl;
+		cout << "Probability of " << i << " : " << output[i] << endl;
 	}
 
 	free(output_layer_1);

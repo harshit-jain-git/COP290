@@ -147,7 +147,7 @@ float**  conv3d(float*** inputMatrix, float** squareKernel, int n, int l, int f,
 	for(int i=0;i<d*d;i++)
 	{
 		int r=i/d,c=i%d;
-		result[r][c]=C[i]+b;
+		result[c][r]=C[i]+b;
 	}
 	return result;
 }
