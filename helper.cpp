@@ -90,36 +90,63 @@ float* flippedkernel(float** squareKernel, int f)
 	}
 	return F;
 }
-float* lkernel(float** squareKernel, int f)
+float* kernel3d(float** squareKernel, int f,int l)
 {
 	float* F;
-	int d=f*f;
+	int d=f*f*l;
 	F=new float[d];
 	int index = 0;
 	// Constructing the flipped kernel
-	for(int i = 0; i <=f-1; i++)
+	for(int k=0;k<l;k++)
 	{
-		for(int j = 0; j <=f-1; j++)
+		for(int i = 0; i <=f-1; i++)
 		{
-			F[index] = squareKernel[i][j];
-			index++;
+			for(int j = 0; j <=f-1; j++)
+			{
+				F[index] = squareKernel[i][j];
+				index++;
+			}
 		}
 	}
 	return F;
 }
-float**  conv(float** inputMatrix, float** squareKernel, int n, int p, int f) {
-	float* T=rmteoplitz(input_matrix,n+2*p,f);
-	float* F = lkernel(squareKernel, f);
-	int d=n+2*p-f+1;
+float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
+{
+	int d=(n-f+1);
+	float* T=new float[d*d*f*f*l];
+	int index=0;
+	for(int i=0;i<d;i++)
+	{
+		for(int j=0;j<d;j++)
+		{
+			for(int k=0;k<l;k++)
+			{
+				for(int p=i;p<i+f;p++)
+				{
+					for(int q=j;q<j+f;q++)
+					{
+						T[index]=inputMatrix[k][p][q];
+						index++;
+					}
+				}
+			}
+		}
+	}
+	return T;
+}
+float**  conv3d(float*** inputMatrix, float** squareKernel, int n, int l, int f,int b) {
+	float* T=teoplitz3d(input_matrix,n,l,f);
+	float* F = kernel3d(squareKernel, f,l);
+	int d=n-f+1;
 	float* C=new float[d*d];
-	double t=mkl_multiply(T,F,C,d*d,f*f,1);
+	double t=mkl_multiply(T,F,C,d*d,f*f*l,1);
 	float** result=new float*[d];
 	for(int i=0;i<d;i++)
 		result[i]=new float[d];
 	for(int i=0;i<d*d;i++)
 	{
 		int r=i/d,c=i%d;
-		result[r][c]=C[i];
+		result[r][c]=C[i]+b;
 	}
 	return result;
 }
