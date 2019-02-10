@@ -39,28 +39,32 @@ int main(int argc, char** argv) {
 	float*** output_layer_1;
 	int channels_1 = CHANNELS_1;
 
-	float*** filter_1 = new float**[channels_1];
+	float**** filter_1 = new float***[channels_1];
 	float* bias_1 = new float[channels_1];
 	int output_layer_1_size = N - M_1 + 1;
+	int l = 1;
 
 	ifstream filter_file;
 	filter_file.open(argv[2]);
 	for (int i = 0; i < channels_1; i++) {
-		filter_1[i] = new float*[M_1];
-		for (int j = 0; j < M_1; j++) {
-			filter_1[i][j] = new float[M_1];
-		}
-	}
-
-	for (int i = 0; i < channels_1; i++) {
-		for (int j = 0; j < M_1; j++) {
+		filter_1[i] = new float**[l];
+		for (int j = 0; j < l; j++) {
+			filter_1[i][j] = new float*[M_1];
 			for (int k = 0; k < M_1; k++) {
-				filter_file >> filter_1[i][j][k];
+				filter_1[i][j][k] = new float[M_1];
 			}
 		}
 	}
 
-	printMatrix(filter_1[0], M_1, M_1);
+	for (int i = 0; i < channels_1; i++) {
+		for (int j = 0; j < l; j++) {
+			for (int k = 0; k < M_1; k++) {
+				for (int m = 0; m < M_1; m++) {
+					filter_file >> filter_1[i][j][k][m];					
+				}
+			}
+		}
+	}
 
 	for (int i = 0; i < channels_1; i++)
 		filter_file >> bias_1[i];
@@ -92,22 +96,28 @@ int main(int argc, char** argv) {
 	float*** output_layer_3;
 	int channels_3 = CHANNELS_3;
 
-	float*** filter_3 = new float**[channels_3];
+	float**** filter_3 = new float***[channels_3];
 	float* bias_3 = new float[channels_3];
 	int output_layer_3_size = output_layer_2_size - M_1 + 1;
+	l = 20;
 
 	filter_file.open(argv[3]);
 	for (int i = 0; i < channels_3; i++) {
-		filter_3[i] = new float*[M_1];
-		for (int j = 0; j < M_1; j++) {
-			filter_3[i][j] = new float[M_1];
+		filter_3[i] = new float**[l];
+		for (int j = 0; j < l; j++) {
+			filter_3[i][j] = new float*[M_1];
+			for (int k = 0; k < M_1; k++) {
+				filter_3[i][j][k] = new float[M_1];
+			}
 		}
 	}
 
 	for (int i = 0; i < channels_3; i++) {
-		for (int j = 0; j < M_1; j++) {
+		for (int j = 0; j < l; j++) {
 			for (int k = 0; k < M_1; k++) {
-				filter_file >> filter_3[i][j][k];
+				for (int m = 0; m < M_1; m++) {
+					filter_file >> filter_3[i][j][k][m];					
+				}
 			}
 		}
 	}
@@ -142,22 +152,28 @@ int main(int argc, char** argv) {
 	float*** output_layer_5;
 	int channels_5 = CHANNELS_5;
 
-	float*** filter_5 = new float**[channels_5];
+	float**** filter_5 = new float***[channels_5];
 	float* bias_5 = new float[channels_5];
 	int output_layer_5_size = output_layer_4_size - M_3 + 1;
+	l = 50;
 
 	filter_file.open(argv[4]);
 	for (int i = 0; i < channels_5; i++) {
-		filter_5[i] = new float*[M_3];
-		for (int j = 0; j < M_3; j++) {
-			filter_5[i][j] = new float[M_3];
+		filter_5[i] = new float**[l];
+		for (int j = 0; j < l; j++) {
+			filter_5[i][j] = new float*[M_3];
+			for (int k = 0; k < M_3; k++) {
+				filter_5[i][j][k] = new float[M_3];
+			}
 		}
 	}
 
 	for (int i = 0; i < channels_5; i++) {
-		for (int j = 0; j < M_3; j++) {
+		for (int j = 0; j < l; j++) {
 			for (int k = 0; k < M_3; k++) {
-				filter_file >> filter_5[i][j][k];
+				for (int m = 0; m < M_3; m++) {
+					filter_file >> filter_5[i][j][k][m];					
+				}
 			}
 		}
 	}
@@ -180,22 +196,28 @@ int main(int argc, char** argv) {
 	float*** output_layer_6;
 	int channels_6 = CHANNELS_6;
 
-	float*** filter_6 = new float**[channels_6];
+	float**** filter_6 = new float***[channels_6];
 	float* bias_6 = new float[channels_6];
 	int output_layer_6_size = output_layer_5_size - M_4 + 1;
+	l = 500;
 
 	filter_file.open(argv[5]);
 	for (int i = 0; i < channels_6; i++) {
-		filter_6[i] = new float*[M_4];
-		for (int j = 0; j < M_4; j++) {
-			filter_6[i][j] = new float[M_4];
+		filter_6[i] = new float**[l];
+		for (int j = 0; j < l; j++) {
+			filter_6[i][j] = new float*[M_4];
+			for (int k = 0; k < M_4; k++) {
+				filter_6[i][j][k] = new float[M_4];
+			}
 		}
 	}
 
 	for (int i = 0; i < channels_6; i++) {
-		for (int j = 0; j < M_4; j++) {
+		for (int j = 0; j < l; j++) {
 			for (int k = 0; k < M_4; k++) {
-				filter_file >> filter_6[i][j][k];
+				for (int m = 0; m < M_4; m++) {
+					filter_file >> filter_6[i][j][k][m];					
+				}
 			}
 		}
 	}

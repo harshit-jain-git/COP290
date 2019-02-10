@@ -11,6 +11,6 @@ float* sigmoid(float* inputVector,int n);
 float* softmax(float* inputVector,int n);
 float* flippedkernel(float** squareKernel,int f);
 float* rmteoplitz(float** inputMatrix, int n,int f);
-float**  conv3d(float*** inputMatrix, float** squareKernel, int n, int l, int f,int b);
-float* kernel3d(float** squareKernel, int f,int l);
+float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f,int b);
+float* kernel3d(float*** squareKernel, int f,int l);
 float* teoplitz3d(float*** inputMatrix, int n,int l,int f);

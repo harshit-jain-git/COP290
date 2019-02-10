@@ -91,20 +91,20 @@ float* flippedkernel(float** squareKernel, int f)
 	}
 	return F;
 }
-float* kernel3d(float** squareKernel, int f,int l)
+float* kernel3d(float*** squareKernel, int f,int l)
 {
 	float* F;
-	int d=f*f*l;
-	F=new float[d];
+	int d = f*f*l;
+	F = new float[d];
 	int index = 0;
 	// Constructing the flipped kernel
-	for(int k=0;k<l;k++)
+	for(int k = 0; k < l; k++)
 	{
-		for(int i = 0; i <=f-1; i++)
+		for(int i = 0; i <= f - 1; i++)
 		{
-			for(int j = 0; j <=f-1; j++)
+			for(int j = 0; j <= f - 1; j++)
 			{
-				F[index] = squareKernel[i][j];
+				F[index] = squareKernel[k][i][j];
 				index++;
 			}
 		}
@@ -113,18 +113,18 @@ float* kernel3d(float** squareKernel, int f,int l)
 }
 float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 {
-	int d=(n-f+1);
-	float* T=new float[d*d*f*f*l];
-	int index=0;
-	for(int i=0;i<d;i++)
+	int d = (n - f + 1);
+	float* T = new float[d*d*f*f*l];
+	int index = 0;
+	for(int i = 0; i < d; i++)
 	{
-		for(int j=0;j<d;j++)
+		for(int j = 0; j < d; j++)
 		{
-			for(int k=0;k<l;k++)
+			for(int k = 0; k < l; k++)
 			{
-				for(int p=i;p<i+f;p++)
+				for(int p = i; p < i + f; p++)
 				{
-					for(int q=j;q<j+f;q++)
+					for(int q = j; q < j + f; q++)
 					{
 						T[index]=inputMatrix[k][p][q];
 						index++;
@@ -135,7 +135,7 @@ float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 	}
 	return T;
 }
-float**  conv3d(float*** inputMatrix, float** squareKernel, int n, int l, int f,int b) {
+float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f,int b) {
 	float* T=teoplitz3d(inputMatrix,n,l,f);
 	float* F = kernel3d(squareKernel, f,l);
 	int d=n-f+1;
