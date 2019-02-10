@@ -2,7 +2,7 @@
 #include <math.h>
 #include "helper.h"
 #include <string.h> 
-#include "mkl_multiply.h"
+#include "cblas_multiply.h"
 using namespace std;
 
 
@@ -135,12 +135,12 @@ float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 	}
 	return T;
 }
-float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f,int b) {
+float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f,float b) {
 	float* T=teoplitz3d(inputMatrix,n,l,f);
 	float* F = kernel3d(squareKernel, f,l);
 	int d=n-f+1;
 	float* C=new float[d*d];
-	double t=mkl_multiply(T,F,C,d*d,f*f*l,1);
+	double t=cblas_multiply(T,F,C,d*d,f*f*l,1);
 	float** result=new float*[d];
 	for(int i=0;i<d;i++)
 		result[i]=new float[d];
@@ -279,6 +279,7 @@ float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 				}
 			}
 			A[index_1][index_2] = (float)(sum/(f*f));
+			//A[index_1][index_2] = inputMatrix[i][j];
 		}
 	}
 	return A;
