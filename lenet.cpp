@@ -28,9 +28,7 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			float a;
-			file >> a;
-			a = 1.0 - a/255.0;
-			Input_image[0][i][j] = a;	
+			file >> Input_image[0][i][j];
 		}
 	}
 	// printMatrix(Input_image[0], N, N);
@@ -236,18 +234,27 @@ int main(int argc, char** argv) {
 	}
 
 	float* output = new float[10];
+	int I[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	for (int i = 0; i < 10; i++)
 		output[i] = output_layer_6[i][0][0];
 
 	output = softmax(output, 10);
-	
-	filter_file.close();
 
-	// Print the result
-	for (int i = 0; i < 10; i++) {
-		cout << "Probability of " << i << " : " << output[i] << endl;
+	cout << "The top five probabilities are: " << endl;
+	for (int i = 0; i < 5; i++) {
+		float max = output[0];
+		int index = 0;
+		for (int j = 0; j < 10; j++) {
+			if (max < output[j]) {
+				max = output[j];
+				index = j;
+			}
+		}
+		output[index] = 0;
+		cout << "Probability of " << index << " : " << max << endl;
 	}
 
+	filter_file.close();
 	free(output_layer_1);
 	free(output_layer_2);
 	free(output_layer_3);
