@@ -2,7 +2,7 @@
 #include <math.h>
 #include "helper.h"
 #include <string.h> 
-#include "cblas_multiply.h"
+#include "mkl_multiply.h"
 using namespace std;
 
 
@@ -100,9 +100,9 @@ float* kernel3d(float*** squareKernel, int f,int l)
 	// Constructing the flipped kernel
 	for(int k = 0; k < l; k++)
 	{
-		for(int i = 0; i <= f - 1; i++)
+		for(int i = 0; i < f; i++)
 		{
-			for(int j = 0; j <= f - 1; j++)
+			for(int j = 0; j < f; j++)
 			{
 				F[index] = squareKernel[k][i][j];
 				index++;
@@ -140,17 +140,18 @@ float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f
 	float* F = kernel3d(squareKernel, f,l);
 	int d=n-f+1;
 	float* C=new float[d*d];
-	double t=cblas_multiply(T,F,C,d*d,f*f*l,1);
+	double t=mkl_multiply(T,F,C,d*d,f*f*l,1);
 	float** result=new float*[d];
 	for(int i=0;i<d;i++)
 		result[i]=new float[d];
 	for(int i=0;i<d*d;i++)
 	{
 		int r=i/d,c=i%d;
-		result[c][r]=C[i]+b;
+		result[r][c]=C[i]+b;
 	}
 	return result;
 }
+
 float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, int f) {
 	float toeplitz[(n + 2*p - f + 1)*(n + 2*p - f + 1)][f*f];
 	// Constructing the Toeplitz Matrix
@@ -237,24 +238,27 @@ float** tanh(float** inputMatrix, int n) {
 	return A;
 }
 
-float** maxpool(float** inputMatrix, int n, int f){
-	int m = n - f + 1;
+float** maxpool(float** inputMatrix, int n, int f, int s = 1){
+	int m = (n - f)/s + 1;
 	float** A = new float*[m];
+	int index_1 = 0, index_2 = 0;
 	for(int i = 0; i < m; i++)
 		A[i] = new float[m];
-	for(int i = 0; i < n - f + 1; i++)
+	for(int i = 0; i < n - f + 1; i=i+s, index_1++)
 	{
-		for(int j = 0; j < n - f + 1; j++)
+		index_2 = 0;
+		for(int j = 0; j < n - f + 1; j=j+s, index_2++)
 		{
 			float max1 = inputMatrix[i][j];
 			for(int u = i; u < i + f; u++)
 			{
 				for(int v = j; v < j + f; v++)
 				{
-					max1 = max(max1,inputMatrix[u][v]);
+					if (max1 < inputMatrix[u][v])
+						max1 = inputMatrix[u][v];
 				}
 			}
-			A[i][j] = max1;
+			A[index_1][index_2] = max1;
 		}
 	}
 	return A;
@@ -268,6 +272,7 @@ float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 		A[i] = new float[m];
 	for(int i = 0; i < n - f + 1; i=i+s, index_1++)
 	{
+		index_2 = 0;
 		for(int j = 0; j < n - f + 1; j=j+s, index_2++)
 		{
 			double sum = 0;

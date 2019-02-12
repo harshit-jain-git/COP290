@@ -8,4 +8,3 @@ else:
     img = img.reshape(28,28,-1);
 #revert the image,and normalize it to 0-1 range
 img = 1.0 - img/255.0
-np.savetxt('1.txt', img);

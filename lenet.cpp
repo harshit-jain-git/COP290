@@ -33,8 +33,8 @@ int main(int argc, char** argv) {
 			Input_image[0][i][j] = a;	
 		}
 	}
-	//printMatrix(Input_image[0], N, N);
-	cout << "Entering Layer 1" << endl;
+	// printMatrix(Input_image[0], N, N);
+	// cout << "Entering Layer 1" << endl;
 
 	// Layer 1
 	float*** output_layer_1;
@@ -67,7 +67,6 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	// printMatrix(filter_1[19][0], M_1, M_1);
 	for (int i = 0; i < channels_1; i++)
 		if (filter_file.good()) filter_file >> bias_1[i];
 		else {cout << "File error" << endl; break;}
@@ -75,11 +74,11 @@ int main(int argc, char** argv) {
 	output_layer_1 = new float**[channels_1];
 	for (int i = 0; i < channels_1; i++) {
 		output_layer_1[i] = conv3d(Input_image, filter_1[i], N, 1, M_1, bias_1[i]);
-		printMatrix(output_layer_1[i], output_layer_1_size, output_layer_1_size);
+		// printMatrix(output_layer_1[i], output_layer_1_size, output_layer_1_size);
 	}
 	filter_file.close();
 
-	cout << "Entering Layer 2" << endl;
+	// cout << "Entering Layer 2" << endl;
 
 	// Layer 2
 	float*** output_layer_2;
@@ -88,11 +87,11 @@ int main(int argc, char** argv) {
 
 	output_layer_2 = new float**[channels_2];
 	for (int i = 0; i < channels_2; i++) {
-		output_layer_2[i] = avgpool(output_layer_1[i], output_layer_1_size, M_2, 2);
-		//printMatrix(output_layer_2[i], output_layer_2_size, output_layer_2_size);
+		output_layer_2[i] = maxpool(output_layer_1[i], output_layer_1_size, M_2, 2);
+		// printMatrix(output_layer_2[i], output_layer_2_size, output_layer_2_size);
 	}
 
-	cout << "Entering Layer 3" << endl;
+	// cout << "Entering Layer 3" << endl;
 
 	// Layer 3
 	float*** output_layer_3;
@@ -131,12 +130,12 @@ int main(int argc, char** argv) {
 	output_layer_3 = new float**[channels_3];
 	for (int i = 0; i < channels_3; i++) {
 		output_layer_3[i] = conv3d(output_layer_2, filter_3[i], output_layer_2_size, channels_2, M_1, bias_3[i]);
-		//printMatrix(output_layer_3[i], output_layer_3_size, output_layer_3_size);
+		// printMatrix(output_layer_3[i], output_layer_3_size, output_layer_3_size);
 	}
 	
 	filter_file.close();
 
-	cout << "Entering Layer 4" << endl;
+	// cout << "Entering Layer 4" << endl;
 	
 	// Layer 4
 	float*** output_layer_4;
@@ -145,11 +144,11 @@ int main(int argc, char** argv) {
 
 	output_layer_4 = new float**[channels_4];
 	for (int i = 0; i < channels_4; i++) {
-		output_layer_4[i] = avgpool(output_layer_3[i], output_layer_3_size, M_2, 2);
-		//printMatrix(output_layer_4[i], output_layer_4_size, output_layer_4_size);
+		output_layer_4[i] = maxpool(output_layer_3[i], output_layer_3_size, M_2, 2);
+		// printMatrix(output_layer_4[i], output_layer_4_size, output_layer_4_size);
 	}
 
-	cout << "Entering Layer 5" << endl;
+	// cout << "Entering Layer 5" << endl;
 
 	// Layer 5
 	float*** output_layer_5;
@@ -189,12 +188,12 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < channels_5; i++) {
 		output_layer_5[i] = conv3d(output_layer_4, filter_5[i], output_layer_4_size, channels_4, M_3, bias_5[i]);
 		output_layer_5[i] = relu(output_layer_5[i], output_layer_5_size);
-		//printMatrix(output_layer_5[i], output_layer_5_size, output_layer_5_size);
+		// printMatrix(output_layer_5[i], output_layer_5_size, output_layer_5_size);
 	}
 
 	filter_file.close();
 
-	cout << "Entering Layer 6" << endl;
+	// cout << "Entering Layer 6" << endl;
 
 	// Layer 6
 	float*** output_layer_6;
@@ -233,7 +232,7 @@ int main(int argc, char** argv) {
 	output_layer_6 = new float**[channels_6];
 	for (int i = 0; i < channels_6; i++) {
 		output_layer_6[i] = conv3d(output_layer_5, filter_6[i], output_layer_6_size, channels_5, M_4, bias_6[i]);
-		//printMatrix(output_layer_6[i], output_layer_6_size, output_layer_6_size);
+		// printMatrix(output_layer_6[i], output_layer_6_size, output_layer_6_size);
 	}
 
 	float* output = new float[10];
@@ -241,7 +240,7 @@ int main(int argc, char** argv) {
 		output[i] = output_layer_6[i][0][0];
 
 	output = softmax(output, 10);
-
+	
 	filter_file.close();
 
 	// Print the result
