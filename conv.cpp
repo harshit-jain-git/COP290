@@ -169,9 +169,9 @@ int main(int argc,char** argv) {
 			}
 			file.close();
 			if (strcmp(mode, "avgpool") == 0) {
-				A = avgpool(input_matrix, n, filter_size);
+				A = avgpool(input_matrix, n, filter_size,1);
 			} else {
-				A = maxpool(input_matrix, n, filter_size);
+				A = maxpool(input_matrix, n, filter_size,1);
 			}
 
 			int dim = input_matrix_size + 2*padding_size - filter_size + 1;

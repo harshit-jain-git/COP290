@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
 
 	output = softmax(output, 10);
 
-	cout << "The top five probabilities are: " << endl;
+	cout << "The top digits along with their probabilities: " << endl;
 	for (int i = 0; i < 5; i++) {
 		float max = output[0];
 		int index = 0;
