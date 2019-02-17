@@ -63,7 +63,7 @@
 
 ![Latency Comparison plot](time_comparison.png)
 
-### Implement a CNN called LeNet using our own Framework
+### Implemented a CNN called LeNet using our own functions
     MNIST Input image: 28x28 pixels, grayscale so number of channels 1
  
     Conv_1:
@@ -116,6 +116,7 @@
     Stride 1, padding 0, so output size (N-K+1) = 1-1+1 = 1
     Number of parameters = 10 (number of filters) * 1 * 1 (square kernel) * 500 (input channels) + 10 (bias terms, one for each filter) = 10 * 501 = 5010.
     File fc2.txt has 5010 values, last 10 being the bias values.
+    
 #### Compilation:
 	Open a terminal in the repo directory and type: make lenet
 **Note:**
