@@ -13,5 +13,4 @@ double cblas_multiply(float* A,float* B,float* C, int m, int l, int n)
 	double time = (double)t/CLOCKS_PER_SEC;
 	time = time*(1000000);
 	return time;
-	//cout << "Time taken in microseconds: " << time << endl;
 }

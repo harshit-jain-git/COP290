@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// Function to print matrix
+// Function to print a linearized matrix given rows and columns
 void print(const char * name, const float* matrix, int row, int column)
 {
     printf("Matrix %s has %d rows and %d columns:\n", name, row, column);
@@ -19,6 +19,7 @@ void print(const char * name, const float* matrix, int row, int column)
     printf("\n");
 }
 
+//Function to print a matrix given rows and columns
 void printMatrix(float** matrix, int dim1, int dim2) {
 	for (int i = 0; i < dim1; i++) {
 		for (int j = 0; j < dim2; j++) {
@@ -28,7 +29,7 @@ void printMatrix(float** matrix, int dim1, int dim2) {
 	}
 }
 
-// Function to print vector
+// Function to print vector given its dimention
 void printVector(float* vector, int dim) {
 	for (int i = 0; i < dim; i++) {
 		cout << vector[i] << " ";
@@ -36,6 +37,7 @@ void printVector(float* vector, int dim) {
 	cout << endl;
 }
 
+//Function to compute convolution of two square matrices with dimentions nxn and fxf. p is padding.
 float** computeConv0(float** inputMatrix, float** squareKernel, int n, int p, int f) {
 	int d = (n + 2*p - f + 1);
 	float** conv;
@@ -57,6 +59,8 @@ float** computeConv0(float** inputMatrix, float** squareKernel, int n, int p, in
 	}
 	return conv;
 }
+
+//Function to convert a matrix (nxn) into 1D row major teoplitz form.
 float* rmteoplitz(float** inputMatrix, int n,int f)
 {
 	int d=(n-f+1);
@@ -74,6 +78,8 @@ float* rmteoplitz(float** inputMatrix, int n,int f)
 	}
 	return T;
 }
+
+//Function to flip a fxf matrix and return its row major form.
 float* flippedkernel(float** squareKernel, int f)
 {
 	float* F;
@@ -91,6 +97,8 @@ float* flippedkernel(float** squareKernel, int f)
 	}
 	return F;
 }
+
+//Function to convert a 3D matrix(lxfxf) to its row major form for 3D convolution.
 float* kernel3d(float*** squareKernel, int f,int l)
 {
 	float* F;
@@ -111,6 +119,8 @@ float* kernel3d(float*** squareKernel, int f,int l)
 	}
 	return F;
 }
+
+//Function to convert a 3D matrix(lxnxn) into a row major teoplitz taking filter_size=f.
 float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 {
 	int d = (n - f + 1);
@@ -135,6 +145,8 @@ float* teoplitz3d(float*** inputMatrix, int n,int l,int f)
 	}
 	return T;
 }
+
+//Function to compute correlation of two 3D matrices(lxnxn and lxfxf) and adding the bias to each term of resultant 2D matrix
 float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f,float b) {
 	float* T=teoplitz3d(inputMatrix,n,l,f);
 	float* F = kernel3d(squareKernel, f,l);
@@ -152,6 +164,7 @@ float**  conv3d(float*** inputMatrix, float*** squareKernel, int n, int l, int f
 	return result;
 }
 
+//Function to compute convolution of a nxn matix with fxf matrix using teoplitz matrix. p is padding.
 float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, int f) {
 	float toeplitz[(n + 2*p - f + 1)*(n + 2*p - f + 1)][f*f];
 	// Constructing the Toeplitz Matrix
@@ -203,6 +216,7 @@ float** computeConv1(float** inputMatrix, float** squareKernel, int n, int p, in
 	return conv;
 }
 
+//Relu function on a nxn input matrix
 float** relu(float** inputMatrix, int n) {
 	float** A;
 
@@ -219,6 +233,7 @@ float** relu(float** inputMatrix, int n) {
 	return A;
 }
 
+//tanh function on a nxn input matrix
 float** tanh(float** inputMatrix, int n) {
 	float** A;
 	A = new float*[n];
@@ -238,6 +253,7 @@ float** tanh(float** inputMatrix, int n) {
 	return A;
 }
 
+//Maxpool function on a nxn input matrix with filter_size=f and stride=1
 float** maxpool(float** inputMatrix, int n, int f, int s = 1){
 	int m = (n - f)/s + 1;
 	float** A = new float*[m];
@@ -264,6 +280,7 @@ float** maxpool(float** inputMatrix, int n, int f, int s = 1){
 	return A;
 }
 
+//Average_pool function on a nxn input matrix with filter_size=f and stride=1
 float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 	int m = (n - f)/s + 1;
 	float** A = new float*[m];
@@ -289,6 +306,8 @@ float** avgpool(float** inputMatrix, int n, int f, int s = 1){
 	}
 	return A;
 }
+
+//sigmoid function on a vector having n elements.
 float* sigmoid(float* inputVector, int n)
 {
 	float* A = new float[n];
@@ -299,6 +318,7 @@ float* sigmoid(float* inputVector, int n)
 	return A;
 }
 
+//softmax function on a vector having n elements.
 float* softmax(float* inputVector, int n)
 {
 	float maxNum = inputVector[0];
