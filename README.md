@@ -121,7 +121,7 @@
 	Open a terminal in the repo directory and type: make lenet
 **Note:**
     Preprocess the Image first before feeding to CNN.
-#####Preprocessing:
+##### Preprocessing:
     python preprocess.py image.png
     It will create a data.txt file after processing image.png
 #### Usage:
