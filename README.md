@@ -63,7 +63,7 @@
 
 ![Latency Comparison plot](time_comparison.png)
 
-###Implement a CNN called LeNet using our own Framework
+### Implement a CNN called LeNet using our own Framework
     MNIST Input image: 28x28 pixels, grayscale so number of channels 1
  
     Conv_1:
