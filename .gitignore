@@ -1,1 +1,6 @@
 *.o
+*.txt
+*.png
+*.bib
+*.tex
+*.eps
