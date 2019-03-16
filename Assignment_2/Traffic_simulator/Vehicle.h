@@ -1,33 +1,39 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
-#include "ds.h"
+#include "Tuple.h"
 using namespace std;
 
 class Vehicle
 {
 public:
-    float velocity;
-    float acceleration;
+    Tuple position;
+    Tuple velocity;
+    Tuple acceleration;
     float length;
     float width;
+    Tuple color;
 
     float getXPos();
     float getYPos();
-    float getDstToCross();
+    Tuple getPos();
 };
 
 class Car : public Vehicle
 {
     public:
-        void update();
         void draw();
 }
 
 class Bus : public Vehicle
 {
     public:
-        void update();
+        void draw();
+}
+
+class Bike : public Vehicle
+{
+    public:
         void draw();
 }
 
