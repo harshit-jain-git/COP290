@@ -20,8 +20,8 @@ time_t timer;
 int count[4] = {0};
 
 int Road::signal;
-Tuple Car::acceleration = Tuple(0.005, 0, 0);
-Tuple Bike::acceleration = Tuple(0.005, 0, 0);
+Tuple Car::acceleration = Tuple(0.01, 0, 0);
+Tuple Bike::acceleration = Tuple(0.01, 0, 0);
 Tuple Truck::acceleration = Tuple(0.005, 0, 0);
 Tuple Bus::acceleration = Tuple(0.005, 0, 0);
 
@@ -128,7 +128,7 @@ void display()
     if (difftime(timer, startTime) > 1)
     {
         time(&startTime);
-        // if (Road::signal > 0) Road::signal--;
+        if (Road::signal > 0) Road::signal--;
         cout << Road::signal << endl;
         for (int i = 0; i < 4; i++)
         {
