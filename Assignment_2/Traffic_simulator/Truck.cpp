@@ -36,3 +36,8 @@ Tuple Truck::getPos()
 {
     return position;
 }
+
+void Truck::draw()
+{
+    return;
+}

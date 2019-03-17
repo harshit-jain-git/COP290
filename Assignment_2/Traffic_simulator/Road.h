@@ -7,6 +7,9 @@
 #include "Tuple.h"
 #include <iostream>
 #include "Car.h"
+#include "Bus.h"
+#include "Truck.h"
+#include "Bike.h"
 #include <vector>
 #include <GLFW/glfw3.h>
 
@@ -20,7 +23,11 @@ public:
     int id;
     int signal;
 
-    vector<Car> cars[4];
+    vector<Car> cars;
+    vector<Bus> buses;
+    vector<Truck> trucks;
+    vector<Bike> bikes;
+
     Road();
     void draw();
     void update();

@@ -5,7 +5,7 @@ using namespace std;
 Car::Car(Tuple pos)
 {
     position = Tuple();
-    velocity = Tuple(0.01, 0, 0);
+    velocity = Tuple(1, 0, 0);
     acceleration = Tuple();
     color = Colors::getRandomColor();
 

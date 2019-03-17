@@ -4,6 +4,7 @@
 #include "Car.h"
 #include "Bus.h"
 #include "Bike.h"
+#include "Truck.h"
 #include "Tuple.h"
 #include "Road.h"
 #include "random"
@@ -36,19 +37,48 @@ void display()
     glLoadIdentity();
     road.draw();
     time(&timer);
-    for (int i = 0; i < road.cars[1].size(); i++)
+    for (int i = 0; i < road.cars.size(); i++)
     {
-        road.cars[1].at(i).position.x += (-0.01 * 1);
-        road.cars[1].at(i).draw();
+        road.cars.at(i).position.x += (-0.01 * road.cars.at(i).velocity.x);
+        road.cars.at(i).draw();
     }
+
+    for (int i = 0; i < road.buses.size(); i++)
+    {
+        road.buses.at(i).position.x += (-0.01 * road.buses.at(i).velocity.x);
+        road.buses.at(i).draw();
+    }
+
+/*
+    for (int i = 0; i < road.trucks.size(); i++)
+    {
+        road.trucks.at(i).position.x += (-0.01 * road.trucks.at(i).velocity.x);
+        road.trucks.at(i).draw();
+    }
+
+    for (int i = 0; i < road.bikes.size(); i++)
+    {
+        road.bikes.at(i).position.x += (-0.01 * road.bikes.at(i).velocity.x);
+        road.bikes.at(i).draw();
+    }
+*/
     if (difftime(timer, startTime) > 1)
     {
         time(&startTime);
         for (int i = 0; i < 4; i++)
         {
             Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);
-            Car car = Car(pos);
-            road.cars[i].push_back(car);
+            int toss = rand()%2;
+            if (toss == 0)
+            {
+                Car car = Car(pos);
+                road.cars.push_back(car);
+            }
+            else if (toss == 1)
+            {
+                Bus bus = Bus(pos);
+                road.buses.push_back(bus);
+            }   
         }
     }
 }
