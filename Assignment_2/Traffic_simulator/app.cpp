@@ -6,11 +6,15 @@
 #include "Bike.h"
 #include "Tuple.h"
 #include "Road.h"
+#include <ctime>
 
 using namespace std;
 
 float roadWidth;
 float roadColor;
+
+time_t startTime;
+time_t timer;
 
 void error_callback(int error, const char* description)
 {
@@ -25,14 +29,31 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 Tuple pos = Tuple(0.7,0.375,0);
 Road road = Road();
+Car car = Car(pos);
+Bus bus = Bus(pos);
 void display()
 {
     glLoadIdentity();
     road.draw();
+    // time(&timer);
+    // if (difftime(timer, startTime) > 1)
+    // {
+    //     time(&startTime);
+    //     for (int i = 0; i < 4; i++)
+    //     {
+    //         Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);
+    //         Car car = Car(pos);
+    //         road.cars.push(car);
+    //     }
+    // }
+    
+    car.draw();
+    bus.draw();
 }
 
 int main() {
 
+    time(&startTime);
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;
     if (!glfwInit())
@@ -73,7 +94,8 @@ int main() {
         glLoadIdentity();
         glOrtho(-1.f, 1.f, -1.f, 1.f, 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
-
+        
+        road.update();
         display();
 
         glfwSwapBuffers(window);

@@ -4,10 +4,11 @@
 #include "Tuple.h"
 #include "Colors.h"
 #include "graphics.h"
+#include "Vehicle.h"
 #include <GLFW/glfw3.h>
 using namespace std;
 
-class Car
+class Car : public Vehicle
 {
 public:
     static float length;
@@ -20,12 +21,14 @@ public:
 
     Tuple color;
 
+    Car();
     Car(Tuple pos);
 
     float getXPos();
     float getYPos();
     Tuple getPos();
     void draw();
+    void print();
 };
 
 #endif

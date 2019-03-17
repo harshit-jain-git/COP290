@@ -6,6 +6,7 @@
 
 #include "Tuple.h"
 #include <iostream>
+#include "Car.h"
 #include <queue>
 #include <GLFW/glfw3.h>
 
@@ -16,16 +17,13 @@ public:
 
     float length;
     float width;
-    
-    queue<void*> lane1;
-    queue<void*> lane2;
-    queue<void*> lane3;
-    queue<void*> lane4;
+    int id;
+    int signal;
 
+    // Car* cars;
     Road();
     void draw();
-
-    
+    void update();
 };
 
 #endif

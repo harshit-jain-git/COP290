@@ -106,3 +106,8 @@ void Road::draw()
     glVertex3f(0.6, 0.25, 0);
     glEnd();
 }
+
+void Road::update()
+{
+    
+}

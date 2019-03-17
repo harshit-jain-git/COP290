@@ -5,9 +5,10 @@
 #include "Colors.h"
 #include "graphics.h"
 #include <GLFW/glfw3.h>
+#include "Vehicle.h"
 using namespace std;
 
-class Bus
+class Bus : public Vehicle
 {
 public:
     static float length;
@@ -19,12 +20,15 @@ public:
     
     Tuple color;
 
+    Bus();
     Bus(Tuple pos);
 
     float getXPos();
     float getYPos();
     Tuple getPos();
     void draw();
+
+    void print();
 };
 
 #endif

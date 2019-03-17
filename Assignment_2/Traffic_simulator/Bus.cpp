@@ -14,6 +14,14 @@ Bus::Bus(Tuple pos)
     position.z = pos.z;
 }
 
+Bus::Bus()
+{
+    position = Tuple();
+    velocity = Tuple();
+    acceleration = Tuple();
+    color = Colors::getRandomColor();
+}
+
 float Bus::getXPos()
 {
     return position.x;

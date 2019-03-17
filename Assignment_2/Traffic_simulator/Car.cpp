@@ -14,6 +14,14 @@ Car::Car(Tuple pos)
     position.z = pos.z;
 }
 
+Car::Car()
+{
+    position = Tuple();
+    velocity = Tuple();
+    acceleration = Tuple();
+    color = Colors::getRandomColor();
+}
+
 float Car::getXPos()
 {
     return position.x;

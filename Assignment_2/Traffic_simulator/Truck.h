@@ -1,5 +1,5 @@
-#ifndef BIKE_H
-#define BIKE_H
+#ifndef TRUCK_H
+#define TRUCK_H
 
 #include "Tuple.h"
 #include "Colors.h"
@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
-class Bike : public Vehicle
+class Truck : public Vehicle
 {
 public:
     static float length;
@@ -20,8 +20,8 @@ public:
     
     Tuple color;
 
-    Bike();
-    Bike(Tuple pos);
+    Truck();
+    Truck(Tuple pos);
 
     float getXPos();
     float getYPos();
