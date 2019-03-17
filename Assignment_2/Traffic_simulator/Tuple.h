@@ -13,6 +13,5 @@ public:
     float x, y, z;
 
     Tuple& operator + (Tuple& right); 
-    Tuple& operator = (Tuple& right);
-}
-
+};
+#endif

@@ -1,39 +1,32 @@
-#include "Vehicle.h"
-#include "Tuple.h"
+#include "Bike.h"
 
-Vehicle::Vehicle(int l, int w)
+using namespace std;
+
+Bike::Bike(Tuple pos)
 {
-    length = l;
-    width = w;
     position = Tuple();
     velocity = Tuple();
     acceleration = Tuple();
     color = Colors::getRandomColor();
+
+    position.x = pos.x;
+    position.y = pos.y;
+    position.z = pos.z;
 }
 
-float Vehicle::getXPos()
+float Bike::getXPos()
 {
     return position.x;
 }
 
-float Vehicle::getYPos()
+float Bike::getYPos()
 {
     return position.y;
 }
 
-Tuple Vehicle::getPos()
+Tuple Bike::getPos()
 {
     return position;
-}
-
-void Car::draw()
-{
-
-}
-
-void Bus::draw()
-{
-
 }
 
 void Bike::draw()

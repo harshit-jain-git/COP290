@@ -21,12 +21,3 @@ Tuple& Tuple::operator + (Tuple& right)
 
     return *this;
 }
-
-Tuple& Tuple::operator = (Tuple& right)
-{
-    x = right.x;
-    y = right.y;
-    z = right.z;
-
-    return *this;
-}

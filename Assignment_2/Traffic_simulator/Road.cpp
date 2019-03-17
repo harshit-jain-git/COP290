@@ -1,23 +1,76 @@
 #include "Road.h"
-#include "Tuple.h"
-#include <iostream>
 
-Tuple Road::roadColor = Tuple(0.3, 0.3, 0.3);
+Tuple Road::roadColor = Tuple(1, 1, 1);
 
-Road::Road(int l, int w)
+Road::Road()
 {
-    length = l;
-    width = w;
+    length = 2;
+    width = 0.5;
 }
 
 void Road::draw()
 {
     glLoadIdentity();
-    glColor3f(0.5,0.5,0.5);
+    glColor3f(roadColor.x, roadColor.y, roadColor.z);
     glBegin(GL_POLYGON);
-    glVertex2f(0, HEIGHT/2 - width/2);
-    glVertex2f(0, HEIGHT/2 + width/2);
-    glVertex2f(WIDTH, HEIGHT/2 - width/2);
-    glVertex2f(WIDTH, HEIGHT/2 - width/2);
+    glVertex3f(-length, -width, 0);
+    glVertex3f(-length, width, 0);
+    glVertex3f(length, width, 0);
+    glVertex3f(length, -width, 0);
     glEnd();
+
+    glLoadIdentity();
+    glColor3f(0, 1, 0.5);
+    glBegin(GL_POLYGON);
+    glVertex3f(-length, -1, 0);
+    glVertex3f(-length, -0.5, 0);
+    glVertex3f(length, -0.5, 0);
+    glVertex3f(length, -1, 0);
+    glEnd();
+    
+    glLoadIdentity();
+    glColor3f(0, 1, 0.5);
+    glBegin(GL_POLYGON);
+    glVertex3f(-length, 0.5, 0);
+    glVertex3f(-length, 0.8, 0);
+    glVertex3f(length, 0.8, 0);
+    glVertex3f(length, 0.5, 0);
+    glEnd();
+    
+    glLoadIdentity();
+    glColor3f(0, 0.7, 1);
+    glBegin(GL_POLYGON);
+    glVertex3f(-length, 0.8, 0);
+    glVertex3f(-length, 1, 0);
+    glVertex3f(length, 1, 0);
+    glVertex3f(length, 0.8, 0);
+    glEnd();
+
+    glLoadIdentity();
+    glBegin(GL_POLYGON);
+    glColor3f(0.3, 0.3, 0.3);
+    glVertex3f(-1, -0.05, 0);
+    glVertex3f(-1, 0.05, 0);
+    glVertex3f(-0.6, 0.05, 0);
+    glVertex3f(-0.6, -0.05, 0);
+    glEnd();
+
+    glLoadIdentity();
+    glBegin(GL_POLYGON);
+    glColor3f(0.3, 0.3, 0.3);
+    glVertex3f(-0.2, -0.05, 0);
+    glVertex3f(-0.2, 0.05, 0);
+    glVertex3f(0.2, 0.05, 0);
+    glVertex3f(0.2, -0.05, 0);
+    glEnd();
+
+    glLoadIdentity();
+    glBegin(GL_POLYGON);
+    glColor3f(0.3, 0.3, 0.3);
+    glVertex3f(0.6, -0.05, 0);
+    glVertex3f(0.6, 0.05, 0);
+    glVertex3f(1, 0.05, 0);
+    glVertex3f(1, -0.05, 0);
+    glEnd();
+
 }
