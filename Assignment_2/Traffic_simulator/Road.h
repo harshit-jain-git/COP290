@@ -16,9 +16,16 @@ public:
 
     float length;
     float width;
+    
+    queue<void*> lane1;
+    queue<void*> lane2;
+    queue<void*> lane3;
+    queue<void*> lane4;
 
     Road();
     void draw();
+
+    
 };
 
 #endif

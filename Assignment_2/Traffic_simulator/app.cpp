@@ -23,17 +23,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-Tuple pos = Tuple(0,0,0);
+Tuple pos = Tuple(0.7,0.375,0);
 Road road = Road();
-Car car = Car(pos);
-Bus bus = Bus(pos);
 void display()
 {
-    glRotatef(0.5, 1, 0, 0);
-
+    glLoadIdentity();
     road.draw();
-    car.draw();
-    bus.draw();
 }
 
 int main() {
@@ -76,7 +71,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        glOrtho(-1.f, 1.f, -1.f, 1.f, 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
 
         display();

@@ -67,11 +67,11 @@ void drawRoof()
 
 void Car::draw()
 {
-    glTranslatef(0, -0.02, 0);
+    glTranslatef(0, 0, 0);
     glColor3f(color.x, color.y, color.z);
 
     glPushMatrix();
-    glTranslatef(0,0.3,0);
+    glTranslatef(position.x,position.y,0);
     drawCube(0.2,0.05,0.1);
     drawRoof();
 
