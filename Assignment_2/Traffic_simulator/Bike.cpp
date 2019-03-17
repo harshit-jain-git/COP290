@@ -32,5 +32,30 @@ Tuple Bike::getPos()
 
 void Bike::draw()
 {
-    
+    glTranslatef(0, 0, 0);
+    glColor3f(color.x, color.y, color.z);
+
+    glPushMatrix();
+    glTranslatef(position.x,position.y,0);
+    glPushMatrix();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(0,0,0);
+    glVertex3f(0,0.05,0);
+    glVertex3f(0.1,0.05,0);
+    glVertex3f(0.1,0,0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    // glVertex3f(0,0,0);
+
+    glVertex3f(0,0.08,0);
+    glVertex3f(0.02,0.08,0);
+    glVertex3f(0.02,-0.03,0);
+    glVertex3f(0,-0.03,0);
+    glEnd();
+
+    glPopMatrix();
+
+    glPopMatrix();
 }

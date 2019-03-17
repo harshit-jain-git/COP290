@@ -20,6 +20,8 @@ public:
     
     Tuple color;
     float dstToLight = 1.5;
+    int lane;
+    int lane_index;
 
     Bus();
     Bus(Tuple pos);

@@ -24,6 +24,36 @@ float Bike::width;
 float maxSpeed;
 float maxAcceleration;
 
+void tc()
+{
+    glLoadIdentity();
+    glColor3f(0.0,0.0,0.5);
+    glBegin(GL_POLYGON);
+    glVertex3f(-0.7,-0.5,0);
+    glVertex3f(-0.7,-0.1,0);
+    glVertex3f(-0.65,-0.1,0);
+    glVertex3f(-0.65,-0.5,0);
+    glEnd();
+}
+
+void light(int a)
+{   
+    glLoadIdentity();
+    if(a>0)
+        glColor3f(1.0,0.0,0.0);
+    else
+    {
+        glColor3f(0.0,1.0,0.0);
+    }
+    
+    glBegin(GL_POLYGON);
+    glVertex3f(-0.695,-0.25,0);
+    glVertex3f(-0.695,-0.2,0);
+    glVertex3f(-0.655,-0.2,0);
+    glVertex3f(-0.655,-0.25,0);
+    glEnd();
+}
+
 void load_configuration(){
     ifstream file;
     string line;

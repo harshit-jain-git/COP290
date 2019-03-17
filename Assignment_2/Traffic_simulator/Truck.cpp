@@ -39,5 +39,20 @@ Tuple Truck::getPos()
 
 void Truck::draw()
 {
+    glTranslatef(position.x,position.y,0);
+    glBegin(GL_POLYGON);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0.1, 0);
+    glVertex3f(0.2, 0.1, 0);
+    glVertex3f(0.2, 0, 0);
+    glEnd();
+
+    //Top Part
+    glBegin(GL_POLYGON);
+    glVertex3f(0.02, 0.1, 0);
+    glVertex3f(0.02, 0.15, 0);
+    glVertex3f(0.01, 0.15, 0);
+    glVertex3f(0, 0.1, 0);
+    glEnd();
     return;
 }
