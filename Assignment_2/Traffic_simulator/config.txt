@@ -1,0 +1,53 @@
+# 1. Define Road Parameters
+Road_Id = 1
+Road_Length = 30
+Road_Width = 5
+Road_Signal = 15
+
+# 2. Define default params for all vehicle types
+Default_MaxSpeed = 1
+Default_Acceleration = 1
+
+# 3. Define params for specific vehicle types
+Vehicle_Type = Car
+Vehicle_Length = 2
+Vehicle_Width = 2
+Vehicle_MaxSpeed = 1
+Vehicle_Acceleration = 1
+
+Vehicle_Type = bike
+Vehicle_Length = 2
+Vehicle_Width = 1
+
+Vehicle_Type = Bus
+Vehicle_Length = 3
+Vehicle_Width = 2
+
+Vehicle_Type = Truck
+Vehicle_Length = 4
+Vehicle_Width = 2
+
+# Definitions over
+# 4. Start the simulation
+START
+
+Signal RED			# Make the signal RED
+
+# Send vehicles with given types on the road (one per second)
+Car GREEN
+bike BLUE
+bike GREEN
+Bus BLUE
+
+Pass 15				# Let the simulation keep running for 15 seconds
+
+# Now below vehicles enter the road
+Car GREEN
+bike BLUE
+Truck GREEN
+Bus BLUE
+
+# Turn the signal green
+Signal GREEN
+
+END			# If signal is GREEN, end should wait till road is clear
