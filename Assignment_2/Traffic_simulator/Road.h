@@ -30,6 +30,10 @@ public:
     vector<Truck> trucks;
     vector<Bike> bikes;
 
+    vector<float> lane1;
+    vector<float> lane2;
+    vector<float> lane3;
+
     Road();
     void draw();
     void update();

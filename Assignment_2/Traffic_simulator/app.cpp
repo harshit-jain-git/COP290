@@ -17,7 +17,7 @@ float roadColor;
 time_t startTime;
 time_t timer;
 
-int Road::signal = 10;
+int Road::signal;
 Tuple Car::acceleration = Tuple(0.005, 0, 0);
 Tuple Bike::acceleration = Tuple(0.005, 0, 0);
 Tuple Truck::acceleration = Tuple(0.005, 0, 0);
@@ -43,31 +43,57 @@ void display()
     time(&timer);
     for (int i = 0; i < road.cars.size(); i++)
     {
-        road.cars.at(i).position.x += (-0.01 * road.cars.at(i).velocity.x);
+        float position_x = road.cars.at(i).position.x;
+        float velocity_x = road.cars.at(i).velocity.x;
+        float dst = road.cars.at(i).dstToLight;
+        position_x += (-0.01 * position_x);
+        if (dst <= 0 && road.signal > 0) road.cars.at(i).velocity.x = 0;
+        else if (velocity_x > 0.3 && road.signal > 0) road.cars.at(i).velocity.x -= (Car::acceleration.x);
+        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.cars.at(i).velocity.x += (Car::acceleration.x);
+        road.cars.at(i).dstToLight = road.cars.at(i).position.x - TLPOSITION;
         road.cars.at(i).draw();
     }
     for (int i = 0; i < road.buses.size(); i++)
     {
-        road.buses.at(i).position.x += (-0.01 * road.buses.at(i).velocity.x);
-        if (road.buses.at(i).dstToLight <= 0 && road.signal > 0) road.buses.at(i).velocity.x = 0;
-        else if (road.buses.at(i).velocity.x > 0.3 && road.signal > 0) road.buses.at(i).velocity.x -= (Bus::acceleration.x);
+        float position_x = road.buses.at(i).position.x;
+        float velocity_x = road.buses.at(i).velocity.x;
+        float dst = road.buses.at(i).dstToLight;
+        position_x += (-0.01 * position_x);
+        if (dst <= 0 && road.signal > 0) road.buses.at(i).velocity.x = 0;
+        else if (velocity_x > 0.3 && road.signal > 0) road.buses.at(i).velocity.x -= (Bus::acceleration.x);
+        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.buses.at(i).velocity.x += (Bus::acceleration.x);
         road.buses.at(i).dstToLight = road.buses.at(i).position.x - TLPOSITION;
         road.buses.at(i).draw();
     }
     for (int i = 0; i < road.trucks.size(); i++)
     {
-        road.trucks.at(i).position.x += (-0.01 * road.trucks.at(i).velocity.x);
+        float position_x = road.trucks.at(i).position.x;
+        float velocity_x = road.trucks.at(i).velocity.x;
+        float dst = road.trucks.at(i).dstToLight;
+        position_x += (-0.01 * position_x);
+        if (dst <= 0 && road.signal > 0) road.trucks.at(i).velocity.x = 0;
+        else if (velocity_x > 0.3 && road.signal > 0) road.trucks.at(i).velocity.x -= (Truck::acceleration.x);
+        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
+        road.trucks.at(i).dstToLight = road.trucks.at(i).position.x - TLPOSITION;
         road.trucks.at(i).draw();
     }
     for (int i = 0; i < road.bikes.size(); i++)
     {
-        road.bikes.at(i).position.x += (-0.01 * road.bikes.at(i).velocity.x);
+        float position_x = road.bikes.at(i).position.x;
+        float velocity_x = road.bikes.at(i).velocity.x;
+        float dst = road.bikes.at(i).dstToLight;
+        position_x += (-0.01 * position_x);
+        if (dst <= 0 && road.signal > 0) road.bikes.at(i).velocity.x = 0;
+        else if (velocity_x > 0.3 && road.signal > 0) road.bikes.at(i).velocity.x -= (Bike::acceleration.x);
+        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
+        road.bikes.at(i).dstToLight = road.bikes.at(i).position.x - TLPOSITION;
         road.bikes.at(i).draw();
     }
 
     if (difftime(timer, startTime) > 1)
     {
         time(&startTime);
+        if (Road::signal > 0) Road::signal--;
         for (int i = 0; i < 4; i++)
         {
             Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);

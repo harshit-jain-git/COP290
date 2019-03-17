@@ -28,6 +28,7 @@ void load_configuration(){
     ifstream file;
     string line;
     file.open("config.txt", ios::in);
+
     while(!file.eof())
     {
         getline(file, line);
@@ -40,78 +41,79 @@ void load_configuration(){
             {
                 Road::id = stoi(ans);
             }
-            else if (str.compare("Road_Length"))
+            else if (str.compare("Road_Length") == 0)
             {
                 Road::length = stof(ans);
             }
-            else if (str.compare("Road_Width"))
+            else if (str.compare("Road_Width") == 0)
             {
                 Road::width = stof(ans);
             }
-            else if (str.compare("Road_Signal"))
+            else if (str.compare("Road_Signal") == 0)
             {
                 Road::signal = stoi(ans);
             }
-            else if (str.compare("Default_MaxSpeed"))
+            else if (str.compare("Default_MaxSpeed") == 0)
             {
                 maxSpeed = stof(ans);                
             }
-            else if (str.compare("Default_Acceleration"))
+            else if (str.compare("Default_Acceleration") == 0)
             {
                 maxAcceleration = stof(ans);
             }
-            else if (str.compare("Vehicle_Type"))
+            else if (str.compare("Vehicle_Type") == 0)
             {
                 if (ans.compare("Car") == 0)
                 {
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Car::length = stof(ans);
 
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Car::width = stof(ans);
                 }
                 else if (ans.compare("Bus") == 0)
                 {
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Bus::length = stof(ans);
 
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Bus::width = stof(ans);
                 }
                 else if (ans.compare("Truck") == 0)
                 {
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Truck::length = stof(ans);
 
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Truck::width = stof(ans);
                 }
                 else if (ans.compare("Bike") == 0)
                 {
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Bike::length = stof(ans);
 
-                    getline(file, str);
+                    getline(file, line);
                     pos = line.find(" = ");
                     ans = line.substr(pos + 3);
                     Bike::width = stof(ans);
                 }
             }            
         }
+        cout << line << endl;
     }
     return;
 }
