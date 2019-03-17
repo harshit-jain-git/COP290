@@ -8,7 +8,7 @@
 #include "Vehicle.h"
 using namespace std;
 
-class Bus : public Vehicle
+class Bus
 {
 public:
     static float length;

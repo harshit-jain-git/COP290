@@ -6,6 +6,7 @@
 #include "Bike.h"
 #include "Tuple.h"
 #include "Road.h"
+#include "random"
 #include <ctime>
 
 using namespace std;
@@ -29,26 +30,27 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 Tuple pos = Tuple(0.7,0.375,0);
 Road road = Road();
-Car car = Car(pos);
-Bus bus = Bus(pos);
+
 void display()
 {
     glLoadIdentity();
     road.draw();
-    // time(&timer);
-    // if (difftime(timer, startTime) > 1)
-    // {
-    //     time(&startTime);
-    //     for (int i = 0; i < 4; i++)
-    //     {
-    //         Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);
-    //         Car car = Car(pos);
-    //         road.cars.push(car);
-    //     }
-    // }
-    
-    car.draw();
-    bus.draw();
+    time(&timer);
+    for (int i = 0; i < road.cars[1].size(); i++)
+    {
+        road.cars[1].at(i).position.x += (-0.01 * 1);
+        road.cars[1].at(i).draw();
+    }
+    if (difftime(timer, startTime) > 1)
+    {
+        time(&startTime);
+        for (int i = 0; i < 4; i++)
+        {
+            Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);
+            Car car = Car(pos);
+            road.cars[i].push_back(car);
+        }
+    }
 }
 
 int main() {

@@ -7,7 +7,7 @@
 #include "Tuple.h"
 #include <iostream>
 #include "Car.h"
-#include <queue>
+#include <vector>
 #include <GLFW/glfw3.h>
 
 class Road
@@ -20,7 +20,7 @@ public:
     int id;
     int signal;
 
-    // Car* cars;
+    vector<Car> cars[4];
     Road();
     void draw();
     void update();

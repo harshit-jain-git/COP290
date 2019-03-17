@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
-class Truck : public Vehicle
+class Truck
 {
 public:
     static float length;
