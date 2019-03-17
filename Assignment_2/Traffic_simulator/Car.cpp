@@ -5,20 +5,20 @@ using namespace std;
 Car::Car(Tuple pos)
 {
     position = Tuple();
-    velocity = Tuple(1, 0, 0);
-    acceleration = Tuple();
+    velocity = Tuple();
     color = Colors::getRandomColor();
 
     position.x = pos.x;
     position.y = pos.y;
     position.z = pos.z;
+
+    velocity.x = 1;
 }
 
 Car::Car()
 {
     position = Tuple();
     velocity = Tuple();
-    acceleration = Tuple();
     color = Colors::getRandomColor();
 }
 

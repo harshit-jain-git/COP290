@@ -13,12 +13,13 @@ class Bus
 public:
     static float length;
     static float width;
+    static Tuple acceleration;
 
     Tuple position;
     Tuple velocity;
-    Tuple acceleration;
     
     Tuple color;
+    float dstToLight = 1.5;
 
     Bus();
     Bus(Tuple pos);

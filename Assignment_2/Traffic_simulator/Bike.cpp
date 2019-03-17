@@ -6,12 +6,13 @@ Bike::Bike(Tuple pos)
 {
     position = Tuple();
     velocity = Tuple();
-    acceleration = Tuple();
     color = Colors::getRandomColor();
 
     position.x = pos.x;
     position.y = pos.y;
     position.z = pos.z;
+
+    velocity.x = 0.9;
 }
 
 float Bike::getXPos()

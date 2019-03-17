@@ -12,13 +12,14 @@ class Car
 public:
     static float length;
     static float width;
+    static Tuple acceleration;
 
     Tuple position;
     Tuple velocity;
-    Tuple acceleration;
     float dstToNext;
 
     Tuple color;
+    float dstToLight = 1.5;
 
     Car();
     Car(Tuple pos);

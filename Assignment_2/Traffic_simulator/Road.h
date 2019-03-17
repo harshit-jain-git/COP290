@@ -13,15 +13,17 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 
+#define TLPOSITION -0.5
+
 class Road
 {
 public:
     static Tuple roadColor;
+    static int signal;
 
-    float length;
-    float width;
-    int id;
-    int signal;
+    static float length;
+    static float width;
+    static int id;
 
     vector<Car> cars;
     vector<Bus> buses;

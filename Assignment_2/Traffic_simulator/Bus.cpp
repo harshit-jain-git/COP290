@@ -5,20 +5,20 @@ using namespace std;
 Bus::Bus(Tuple pos)
 {
     position = Tuple();
-    velocity = Tuple(0.8, 0, 0);
-    acceleration = Tuple();
+    velocity = Tuple();
     color = Colors::getRandomColor();
 
     position.x = pos.x;
     position.y = pos.y;
     position.z = pos.z;
+
+    velocity.x = 0.6;
 }
 
 Bus::Bus()
 {
     position = Tuple();
     velocity = Tuple();
-    acceleration = Tuple();
     color = Colors::getRandomColor();
 }
 
