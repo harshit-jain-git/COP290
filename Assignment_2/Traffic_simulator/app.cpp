@@ -22,8 +22,8 @@ int count[4] = {0};
 int Road::signal;
 Tuple Car::acceleration = Tuple(0.01, 0, 0);
 Tuple Bike::acceleration = Tuple(0.01, 0, 0);
-Tuple Truck::acceleration = Tuple(0.005, 0, 0);
-Tuple Bus::acceleration = Tuple(0.005, 0, 0);
+Tuple Truck::acceleration = Tuple(0.01, 0, 0);
+Tuple Bus::acceleration = Tuple(0.01, 0, 0);
 
 void error_callback(int error, const char* description)
 {
@@ -56,10 +56,10 @@ void display()
 
         if (lan_index != 0) road.cars.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1) + road.cars.at(i).position.x;
         else road.cars.at(i).dstToLight = road.cars.at(i).position.x - TLPOSITION;
-
-        if (road.cars.at(i).dstToLight <= 0.3) road.cars.at(i).velocity.x = 0;
+        if(lan_index==0&&road.signal <= 0) road.cars.at(i).velocity.x = 2;
+        else if (road.cars.at(i).dstToLight <= 0.3) road.cars.at(i).velocity.x = 0;
         else if (velocity_x > 0.3 && road.signal > 0) road.cars.at(i).velocity.x -= (Car::acceleration.x);
-        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.cars.at(i).velocity.x += (Car::acceleration.x);
+        else if (velocity_x < 1 && road.signal == 0) road.cars.at(i).velocity.x += (Car::acceleration.x);
         
         road.cars.at(i).position.x += (-0.01 * velocity_x);
         road.lanes[lan].at(lan_index) = road.cars.at(i).position.x;
@@ -77,10 +77,10 @@ void display()
 
         if (lan_index != 0) road.buses.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1) + road.buses.at(i).position.x;
         else road.buses.at(i).dstToLight = road.buses.at(i).position.x - TLPOSITION;
-
-        if (road.buses.at(i).dstToLight <= 0.3 && road.signal > 0) road.buses.at(i).velocity.x = 0;
+        if(lan_index==0&&road.signal <= 0) road.buses.at(i).velocity.x = 2;
+        else if (road.buses.at(i).dstToLight <= 0.3 && road.signal > 0) road.buses.at(i).velocity.x = 0;
         else if (velocity_x > 0.3 && road.signal > 0) road.buses.at(i).velocity.x -= (Bus::acceleration.x);
-        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.buses.at(i).velocity.x += (Bus::acceleration.x);
+        else if (velocity_x < 1 && road.signal == 0) road.buses.at(i).velocity.x += (Bus::acceleration.x);
 
         road.buses.at(i).position.x += (-0.01 * velocity_x);
         road.lanes[lan].at(lan_index) = road.buses.at(i).position.x;
@@ -98,10 +98,10 @@ void display()
 
         if (lan_index != 0) road.trucks.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.trucks.at(i).position.x;
         else road.trucks.at(i).dstToLight = road.trucks.at(i).position.x - TLPOSITION;
-
-        if (road.trucks.at(i).dstToLight <= 0.3 && road.signal > 0) road.trucks.at(i).velocity.x = 0;
+        if(lan_index==0&&road.signal <= 0) road.trucks.at(i).velocity.x = 2;
+        else if (road.trucks.at(i).dstToLight <= 0.3 && road.signal > 0) road.trucks.at(i).velocity.x = 0;
         else if (velocity_x > 0.3 && road.signal > 0) road.trucks.at(i).velocity.x -= (Truck::acceleration.x);
-        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
+        else if (velocity_x < 1 && road.signal == 0) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
         road.trucks.at(i).position.x += (-0.01 * velocity_x);
         road.lanes[lan].at(lan_index) = road.trucks.at(i).position.x;
         road.trucks.at(i).draw();
@@ -118,10 +118,10 @@ void display()
 
         if (lan_index != 0) road.bikes.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.bikes.at(i).position.x;
         else road.bikes.at(i).dstToLight = road.bikes.at(i).position.x - TLPOSITION;
-
-        if (road.bikes.at(i).dstToLight <= 0.3 && road.signal > 0) road.bikes.at(i).velocity.x = 0;
+        if(lan_index==0&&road.signal <= 0) road.bikes.at(i).velocity.x = 2;
+        else if (road.bikes.at(i).dstToLight <= 0.3 && road.signal > 0) road.bikes.at(i).velocity.x = 0;
         else if (velocity_x > 0.3 && road.signal > 0) road.bikes.at(i).velocity.x -= (Bike::acceleration.x);
-        else if (velocity_x > 0 && velocity_x < 1 && road.signal == 0) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
+        else if (velocity_x < 1 && road.signal == 0) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
         road.bikes.at(i).position.x += (-0.01 * velocity_x);
         road.lanes[lan].at(lan_index) = road.bikes.at(i).position.x;
         road.bikes.at(i).draw();
