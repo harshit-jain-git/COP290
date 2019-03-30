@@ -165,9 +165,12 @@ void display()
                 Car car = Car(pos);
                 car.lane = i;
                 car.n_lanes=L;
-                car.lane_index = count[i];
                 for(int k=0;k<L;k++)
+                {
                     road.lanes[i+k].push_back(car.position.x);
+                    car.lane_index.push_back(count[i+k]);
+                    count[i+k]++;
+                }
                 road.cars.push_back(car);
             }
             else if (toss == 1)
@@ -175,9 +178,12 @@ void display()
                 Bus bus = Bus(pos);
                 bus.lane = i;
                 bus.n_lanes=L;
-                bus.lane_index = count[i];
                 for(int k=0;k<L;k++)
+                {
                     road.lanes[i+k].push_back(bus.position.x);
+                    bus.lane_index.push_back(count[i+k]);
+                    count[i+k]++;
+                }
                 road.buses.push_back(bus);
             }
             else if (toss == 2)
@@ -185,9 +191,12 @@ void display()
                 Truck truck = Truck(pos);
                 truck.lane = i;
                 truck.n_lanes=L;
-                truck.lane_index = count[i];
                 for(int k=0;k<L;k++)
+                {
                     road.lanes[i+k].push_back(truck.position.x);
+                    truck.lane_index.push_back(count[i+k]);
+                    count[i+k]++;
+                }
                 road.trucks.push_back(truck);
             }
             else if (toss == 3)
@@ -195,9 +204,12 @@ void display()
                 Bike bike = Bike(pos);
                 bike.lane = i;
                 bike.n_lanes=L;
-                bike.lane_index = count[i];
                 for(int k=0;k<L;k++)
+                {
                     road.lanes[i+k].push_back(bike.position.x);
+                    bike.lane_index.push_back(count[i+k]);
+                    count[i+k]++;
+                }
                 road.bikes.push_back(bike);
             }   
             // count[i]++;

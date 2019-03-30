@@ -3,3 +3,6 @@
 *.bib
 *.tex
 *.eps
+.vscode/*
+.zip
+*.out
