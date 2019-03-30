@@ -11,13 +11,27 @@
 #include "helper.h"
 
 using namespace std;
-float roadWidth;
+int Road::id;
+float Road::length;
+float Road::width;
+int Road::num_lanes;
+float Car::length;
+float Car::width;
+float Bus::length;
+float Bus::width;
+float Truck::length;
+float Truck::width;
+float Bike::length;
+float Bike::width;
+int Road::num_lanes;
+
 float roadColor;
+int v_l[4];//lanes taken by ith vehicle  0: car   1:bus   2:truck    3:bike
 
 time_t startTime;
 time_t timer;
 
-int count[4] = {0};
+int* count;
 
 int Road::signal;
 Tuple Car::acceleration = Tuple(0.01, 0, 0);
@@ -65,113 +79,128 @@ void display()
         road.lanes[lan].at(lan_index) = road.cars.at(i).position.x;
         road.cars.at(i).draw();
     }
-    for (int i = 0; i < road.buses.size(); i++)
-    {
-        float position_x = road.buses.at(i).position.x;
-        float velocity_x = road.buses.at(i).velocity.x;
-        float dst = road.buses.at(i).dstToLight;
-        int lan = road.buses.at(i).lane;
-        int lan_index = road.buses.at(i).lane_index;
+    // for (int i = 0; i < road.buses.size(); i++)
+    // {
+    //     float position_x = road.buses.at(i).position.x;
+    //     float velocity_x = road.buses.at(i).velocity.x;
+    //     float dst = road.buses.at(i).dstToLight;
+    //     int lan = road.buses.at(i).lane;
+    //     int lan_index = road.buses.at(i).lane_index;
 
         
 
-        if (lan_index != 0) road.buses.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1) + road.buses.at(i).position.x;
-        else road.buses.at(i).dstToLight = road.buses.at(i).position.x - TLPOSITION;
-        if(lan_index==0&&road.signal <= 0) road.buses.at(i).velocity.x = 2;
-        else if (road.buses.at(i).dstToLight <= 0.3 && road.signal > 0) road.buses.at(i).velocity.x = 0;
-        else if (velocity_x > 0.3 && road.signal > 0) road.buses.at(i).velocity.x -= (Bus::acceleration.x);
-        else if (velocity_x < 1 && road.signal == 0) road.buses.at(i).velocity.x += (Bus::acceleration.x);
+    //     if (lan_index != 0) road.buses.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1) + road.buses.at(i).position.x;
+    //     else road.buses.at(i).dstToLight = road.buses.at(i).position.x - TLPOSITION;
+    //     if(lan_index==0&&road.signal <= 0) road.buses.at(i).velocity.x = 2;
+    //     else if (road.buses.at(i).dstToLight <= 0.3 && road.signal > 0) road.buses.at(i).velocity.x = 0;
+    //     else if (velocity_x > 0.3 && road.signal > 0) road.buses.at(i).velocity.x -= (Bus::acceleration.x);
+    //     else if (velocity_x < 1 && road.signal == 0) road.buses.at(i).velocity.x += (Bus::acceleration.x);
 
-        road.buses.at(i).position.x += (-0.01 * velocity_x);
-        road.lanes[lan].at(lan_index) = road.buses.at(i).position.x;
-        road.buses.at(i).draw();
-    }
-    for (int i = 0; i < road.trucks.size(); i++)
-    {
-        float position_x = road.trucks.at(i).position.x;
-        float velocity_x = road.trucks.at(i).velocity.x;
-        float dst = road.trucks.at(i).dstToLight;
-        int lan = road.trucks.at(i).lane;
-        int lan_index = road.trucks.at(i).lane_index;
+    //     road.buses.at(i).position.x += (-0.01 * velocity_x);
+    //     road.lanes[lan].at(lan_index) = road.buses.at(i).position.x;
+    //     road.buses.at(i).draw();
+    // }
+    // for (int i = 0; i < road.trucks.size(); i++)
+    // {
+    //     float position_x = road.trucks.at(i).position.x;
+    //     float velocity_x = road.trucks.at(i).velocity.x;
+    //     float dst = road.trucks.at(i).dstToLight;
+    //     int lan = road.trucks.at(i).lane;
+    //     int lan_index = road.trucks.at(i).lane_index;
         
 
 
-        if (lan_index != 0) road.trucks.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.trucks.at(i).position.x;
-        else road.trucks.at(i).dstToLight = road.trucks.at(i).position.x - TLPOSITION;
-        if(lan_index==0&&road.signal <= 0) road.trucks.at(i).velocity.x = 2;
-        else if (road.trucks.at(i).dstToLight <= 0.3 && road.signal > 0) road.trucks.at(i).velocity.x = 0;
-        else if (velocity_x > 0.3 && road.signal > 0) road.trucks.at(i).velocity.x -= (Truck::acceleration.x);
-        else if (velocity_x < 1 && road.signal == 0) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
-        road.trucks.at(i).position.x += (-0.01 * velocity_x);
-        road.lanes[lan].at(lan_index) = road.trucks.at(i).position.x;
-        road.trucks.at(i).draw();
-    }
-    for (int i = 0; i < road.bikes.size(); i++)
-    {
-        float position_x = road.bikes.at(i).position.x;
-        float velocity_x = road.bikes.at(i).velocity.x;
-        float dst = road.bikes.at(i).dstToLight;
-        int lan = road.bikes.at(i).lane;
-        int lan_index = road.bikes.at(i).lane_index;
+    //     if (lan_index != 0) road.trucks.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.trucks.at(i).position.x;
+    //     else road.trucks.at(i).dstToLight = road.trucks.at(i).position.x - TLPOSITION;
+    //     if(lan_index==0&&road.signal <= 0) road.trucks.at(i).velocity.x = 2;
+    //     else if (road.trucks.at(i).dstToLight <= 0.3 && road.signal > 0) road.trucks.at(i).velocity.x = 0;
+    //     else if (velocity_x > 0.3 && road.signal > 0) road.trucks.at(i).velocity.x -= (Truck::acceleration.x);
+    //     else if (velocity_x < 1 && road.signal == 0) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
+    //     road.trucks.at(i).position.x += (-0.01 * velocity_x);
+    //     road.lanes[lan].at(lan_index) = road.trucks.at(i).position.x;
+    //     road.trucks.at(i).draw();
+    // }
+    // for (int i = 0; i < road.bikes.size(); i++)
+    // {
+    //     float position_x = road.bikes.at(i).position.x;
+    //     float velocity_x = road.bikes.at(i).velocity.x;
+    //     float dst = road.bikes.at(i).dstToLight;
+    //     int lan = road.bikes.at(i).lane;
+    //     int lan_index = road.bikes.at(i).lane_index;
 
  
 
-        if (lan_index != 0) road.bikes.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.bikes.at(i).position.x;
-        else road.bikes.at(i).dstToLight = road.bikes.at(i).position.x - TLPOSITION;
-        if(lan_index==0&&road.signal <= 0) road.bikes.at(i).velocity.x = 2;
-        else if (road.bikes.at(i).dstToLight <= 0.3 && road.signal > 0) road.bikes.at(i).velocity.x = 0;
-        else if (velocity_x > 0.3 && road.signal > 0) road.bikes.at(i).velocity.x -= (Bike::acceleration.x);
-        else if (velocity_x < 1 && road.signal == 0) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
-        road.bikes.at(i).position.x += (-0.01 * velocity_x);
-        road.lanes[lan].at(lan_index) = road.bikes.at(i).position.x;
-        road.bikes.at(i).draw();
-    }
+    //     if (lan_index != 0) road.bikes.at(i).dstToLight = -road.lanes[lan].at(lan_index - 1)+road.bikes.at(i).position.x;
+    //     else road.bikes.at(i).dstToLight = road.bikes.at(i).position.x - TLPOSITION;
+    //     if(lan_index==0&&road.signal <= 0) road.bikes.at(i).velocity.x = 2;
+    //     else if (road.bikes.at(i).dstToLight <= 0.3 && road.signal > 0) road.bikes.at(i).velocity.x = 0;
+    //     else if (velocity_x > 0.3 && road.signal > 0) road.bikes.at(i).velocity.x -= (Bike::acceleration.x);
+    //     else if (velocity_x < 1 && road.signal == 0) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
+    //     road.bikes.at(i).position.x += (-0.01 * velocity_x);
+    //     road.lanes[lan].at(lan_index) = road.bikes.at(i).position.x;
+    //     road.bikes.at(i).draw();
+    // }
 
-    if (difftime(timer, startTime) > 1)
+    if (difftime(timer, startTime) > 0.5)
     {
         time(&startTime);
         if (Road::signal > 0) Road::signal--;
         cout << Road::signal << endl;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < Road::num_lanes; i++)
         {
-            if (road.lanes[i].size() > 0)
-                if (road.lanes[i].back() > 0.5)
-                    continue;
-            Tuple pos = Tuple(1, -0.375 + 0.25*i, 0);
             int toss = rand()%4;
+            int L=v_l[toss];
+            if(Road::num_lanes-i<L)
+                continue;
+            for(int k=0;k<L;k++)
+            {
+                if (road.lanes[i+k].size() > 0)
+                    if (road.lanes[i+k].back() > 0.5)
+                        continue;
+            }
+            float temp=-Road::width/2.0+(lane_width*L)/2.0+lane_width*i;
+            Tuple pos = Tuple(1, temp, 0);
             if (toss == 0)
             {
                 Car car = Car(pos);
                 car.lane = i;
+                car.n_lanes=L;
                 car.lane_index = count[i];
-                road.lanes[i].push_back(car.position.x);
+                for(int k=0;k<L;k++)
+                    road.lanes[i+k].push_back(car.position.x);
                 road.cars.push_back(car);
             }
             else if (toss == 1)
             {
                 Bus bus = Bus(pos);
                 bus.lane = i;
+                bus.n_lanes=L;
                 bus.lane_index = count[i];
-                road.lanes[i].push_back(bus.position.x);
+                for(int k=0;k<L;k++)
+                    road.lanes[i+k].push_back(bus.position.x);
                 road.buses.push_back(bus);
             }
             else if (toss == 2)
             {
                 Truck truck = Truck(pos);
                 truck.lane = i;
+                truck.n_lanes=L;
                 truck.lane_index = count[i];
-                road.lanes[i].push_back(truck.position.x);
+                for(int k=0;k<L;k++)
+                    road.lanes[i+k].push_back(truck.position.x);
                 road.trucks.push_back(truck);
             }
             else if (toss == 3)
             {
                 Bike bike = Bike(pos);
                 bike.lane = i;
+                bike.n_lanes=L;
                 bike.lane_index = count[i];
-                road.lanes[i].push_back(bike.position.x);
+                for(int k=0;k<L;k++)
+                    road.lanes[i+k].push_back(bike.position.x);
                 road.bikes.push_back(bike);
             }   
-            count[i]++;
+            // count[i]++;
         }
     }
 }
@@ -179,6 +208,13 @@ void display()
 int main() {
     
     load_configuration();
+    // n_l=(int)(r_w/lane_width);
+    road.lanes=new vector<float>[Road::num_lanes];
+    count=new int[Road::num_lanes];
+    v_l[0]=1+(int)(Car::width/lane_width);
+    v_l[1]=1+(int)(Bus::width/lane_width);
+    v_l[2]=1+(int)(Truck::width/lane_width);
+    v_l[3]=1+(int)(Bike::width/lane_width);
     time(&startTime);
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;

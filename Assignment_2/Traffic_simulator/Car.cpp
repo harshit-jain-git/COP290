@@ -47,14 +47,16 @@ void drawQuad(Tuple a, Tuple b, Tuple c, Tuple d)
 
 void drawRoof()
 {
+    float length = Car::length;
+    float width = Car::width;
     Tuple a1(0,0,-0.05);
-    Tuple a2(0.025,0.05,-0.0375);
-    Tuple a3(0.075,0.05,-0.0375);
-    Tuple a4(0.1125,0,-0.05);
+    Tuple a2(length/5,width/2,-0.0375);
+    Tuple a3(4*length/5,width/2,-0.0375);
+    Tuple a4(length,0,-0.05);
     Tuple a5(0,0,0.05);
-    Tuple a6(0.025,0.05,0.0375);
-    Tuple a7(0.075,0.05,0.0375);
-    Tuple a8(0.1125,0,0.05);
+    Tuple a6(length/5,width/2,0.0375);
+    Tuple a7(4*length/5,width/2,0.0375);
+    Tuple a8(length,0,0.05);
 
     glPushMatrix();
     glTranslatef(-0.075, 0.025, 0);

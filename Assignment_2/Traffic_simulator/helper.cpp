@@ -13,6 +13,7 @@ using namespace std;
 int Road::id;
 float Road::length;
 float Road::width;
+int Road::num_lanes;
 float Car::length;
 float Car::width;
 float Bus::length;
@@ -58,7 +59,6 @@ void load_configuration(){
     ifstream file;
     string line;
     file.open("config.txt", ios::in);
-
     while(!file.eof())
     {
         getline(file, line);
@@ -145,5 +145,6 @@ void load_configuration(){
         }
         cout << line << endl;
     }
+    Road::num_lanes = (int)(2*Road::width/lane_width);
     return;
 }

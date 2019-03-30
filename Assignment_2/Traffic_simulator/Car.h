@@ -17,7 +17,9 @@ public:
     Tuple position;
     Tuple velocity;
     int lane;
-    int lane_index;
+    int n_lanes;
+    vector<int> lane_index;
+
 
     Tuple color;
     float dstToLight = 1.5;

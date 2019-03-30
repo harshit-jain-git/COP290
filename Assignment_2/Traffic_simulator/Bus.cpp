@@ -47,10 +47,10 @@ void Bus::draw()
     glPushMatrix();
     // rotateY(-busAngle / 1.3);
     glTranslatef(-0.2,0,0);
-    drawCube(0.3,0.13,0.135);
+    drawCube(length,width,0.135);
     glColor3f(0,0.8,0.8);
     glTranslatef(-0.02,0.02,0);
-    drawCube(0.25,0.07,0.14);
+    drawCube(length - 0.05,width/2.0,0.14);
     glPopMatrix();
 
     glPopMatrix();
