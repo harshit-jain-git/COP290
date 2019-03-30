@@ -28,13 +28,14 @@ public:
     static int id;
     static float maxSpeed;
     static float maxAcceleration;
+    static int num_lanes;
 
     vector<Car> cars;
     vector<Bus> buses;
     vector<Truck> trucks;
     vector<Bike> bikes;
-    static int num_lanes;
     vector<float>*  lanes;
+    int* start_index;
 
     Road();
     void draw();

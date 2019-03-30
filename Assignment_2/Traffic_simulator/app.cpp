@@ -41,6 +41,25 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 Road road = Road();
 
+int check_shift(int x_start, int x_end, int lane)
+{
+    if (lane == -1 || lane == Road::num_lanes) return -1;
+
+    for (int i = road.start_index[lane]; i < count[lane] - 1; i++)
+    {
+        if (road.lanes[lane].at(road.start_index[lane]) > x_end)
+            return road.start_index[lane];
+        if (road.lanes[lane].at(i) + 0.2 < x_start && road.lanes[lane].at(i + 1) > x_end)
+        {
+            return i + 1;
+        }
+        if (road.lanes[lane].at(count[lane] - 1) + 0.2 < x_start)
+            return count[lane];
+    }
+
+    return -1;
+}
+
 void display()
 {
     glLoadIdentity();
@@ -71,9 +90,24 @@ void display()
         float velocity_x = road.cars.at(i).velocity.x;
         road.cars.at(i).position.x += (-0.005 * velocity_x);
 
+        bool flag = false;
+        if (road.cars.at(i).position.x < -1) flag = true;
+
         for(int k=0;k<L;k++)
         {
             road.lanes[lan+k].at(lan_index.at(k)) = road.cars.at(i).position.x;
+            if (flag) road.start_index[lan + k]++;
+        }
+
+        int test_1 = check_shift(road.cars.at(i).position.x, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane - 1);
+        int test_2 = check_shift(road.cars.at(i).position.x, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane + road.cars.at(i).n_lanes);
+
+        if (test_1)
+        {
+            road.cars.at(i).lane--;
+            road.cars.at(i).position.y -= lane_width;
+            road.lanes[lan - 1].insert(road.lanes[lan - 1].begin() + test_1, road.cars.at(i).position.x);
+            road.lanes[lan + L - 1].erase(road.lanes[lan + L - 1].begin() + road.cars.at(i).lane_index.at(L - 1));
         }
         road.cars.at(i).draw();
     }
@@ -191,7 +225,7 @@ void display()
             }
             if (toss == 0)
             {
-                pos.x = 1 + Car::length/2.0;
+                // pos.x = 1 + Car::length/2.0;
                 Car car = Car(pos);
                 car.lane = i;
                 car.n_lanes=L;
@@ -205,7 +239,7 @@ void display()
             }
             else if (toss == 1)
             {
-                pos.x = 1 + Bus::length/2.0;
+                // pos.x = 1 + Bus::length/2.0;
                 Bus bus = Bus(pos);
                 bus.lane = i;
                 bus.n_lanes=L;
@@ -219,7 +253,7 @@ void display()
             }
             else if (toss == 2)
             {
-                pos.x = 1 + Truck::length/2.0;
+                // pos.x = 1 + Truck::length/2.0;
                 Truck truck = Truck(pos);
                 truck.lane = i;
                 truck.n_lanes=L;
@@ -233,7 +267,7 @@ void display()
             }
             else if (toss == 3)
             {
-                pos.x = 1 + Bike::length/2.0;
+                // pos.x = 1 + Bike::length/2.0;
                 Bike bike = Bike(pos);
                 bike.lane = i;
                 bike.n_lanes=L;
@@ -257,8 +291,11 @@ int main() {
     load_configuration();
     srand(time(0));
     speed = Road::maxSpeed;
+    
     road.lanes=new vector<float>[Road::num_lanes];
+    road.start_index = new int[Road::num_lanes];
     count=new int[Road::num_lanes];
+
     v_l[0]=1+(int)(Car::width/lane_width);
     v_l[1]=1+(int)(Bus::width/lane_width);
     v_l[2]=1+(int)(Truck::width/lane_width);
@@ -267,6 +304,7 @@ int main() {
     {
         road.lanes[i].push_back(TLPOSITION);
         count[i] = 1;
+        road.start_index[i] = 1;
     }
     
     time(&startTime);
