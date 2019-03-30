@@ -3,6 +3,5 @@
 
 #include <GLFW/glfw3.h>
 #include <vector> 
-void drawCube(float a, float b, float c);
 
 #endif

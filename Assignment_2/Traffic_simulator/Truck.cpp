@@ -42,6 +42,7 @@ void Truck::draw()
     glColor3f(color.x, color.y, color.z);
 
     glPushMatrix();
+    
     glTranslatef(0, -0.04, 0);
     glTranslatef(position.x,position.y,0);
     glBegin(GL_POLYGON);

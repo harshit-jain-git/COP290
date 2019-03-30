@@ -18,10 +18,12 @@ public:
     Tuple position;
     Tuple velocity;
     
-    Tuple color;
-    float dstToLight = 1.5;
+    Tuple color_1;
+    Tuple color_2;
+
     int lane;
     int n_lanes;
+    float dstToLight = 1.5;
     vector<int> lane_index;    
 
     Bus();

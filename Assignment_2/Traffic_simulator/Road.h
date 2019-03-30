@@ -14,7 +14,7 @@
 #include <GLFW/glfw3.h>
 #include "helper.h"
 
-#define TLPOSITION -0.5
+#define TLPOSITION -0.8
 #define lane_width 0.25
 
 class Road
@@ -26,6 +26,9 @@ public:
     static float length;
     static float width;
     static int id;
+    static float maxSpeed;
+    static float maxAcceleration;
+
     vector<Car> cars;
     vector<Bus> buses;
     vector<Truck> trucks;

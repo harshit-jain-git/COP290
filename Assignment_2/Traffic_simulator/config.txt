@@ -6,21 +6,21 @@ Road_Signal = 15
 
 # 2. Define default params for all vehicle types
 Default_MaxSpeed = 1
-Default_Acceleration = 1
+Default_Acceleration = 0.01
 
 # 3. Define params for specific vehicle types
 Vehicle_Type = Car
-Vehicle_Length = 0.1125
+Vehicle_Length = 0.2
 Vehicle_Width = 0.1
 Vehicle_MaxSpeed = 1
 Vehicle_Acceleration = 1
 
 Vehicle_Type = Bike
-Vehicle_Length = 0.2
-Vehicle_Width = 0.1
+Vehicle_Length = 0.1
+Vehicle_Width = 0.05
 
 Vehicle_Type = Bus
-Vehicle_Length = 0.4
+Vehicle_Length = 0.3
 Vehicle_Width = 0.20
 
 Vehicle_Type = Truck

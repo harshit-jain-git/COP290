@@ -45,45 +45,28 @@ void drawQuad(Tuple a, Tuple b, Tuple c, Tuple d)
     glVertex3f(d.x, d.y, d.z);
 }
 
-void drawRoof()
-{
-    float length = Car::length;
-    float width = Car::width;
-    Tuple a1(0,0,-0.05);
-    Tuple a2(length/5,width/2,-0.0375);
-    Tuple a3(4*length/5,width/2,-0.0375);
-    Tuple a4(length,0,-0.05);
-    Tuple a5(0,0,0.05);
-    Tuple a6(length/5,width/2,0.0375);
-    Tuple a7(4*length/5,width/2,0.0375);
-    Tuple a8(length,0,0.05);
-
-    glPushMatrix();
-    glTranslatef(-0.075, 0.025, 0);
-    glBegin(GL_QUADS);
-
-    drawQuad(a2,a6,a7,a3);
-
-    glColor3f(0,1,1);
-
-    drawQuad(a1,a2,a3,a4);
-    drawQuad(a1,a5,a6,a2);
-    drawQuad(a5,a8,a7,a6);
-    drawQuad(a8,a4,a3,a7);
-
-    glEnd();
-    glPopMatrix();
-}
-
 void Car::draw()
 {
-    glTranslatef(0, 0, 0);
+    glPushMatrix();
+
+    glTranslatef(position.x, position.y, 0);
     glColor3f(color.x, color.y, color.z);
 
-    glPushMatrix();
-    glTranslatef(position.x,position.y,0);
-    drawCube(0.2,0.05,0.1);
-    drawRoof();
+    glBegin(GL_POLYGON);
+    glVertex3f(0, -width/2, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(length, 0, 0);
+    glVertex3f(length, -width/2, 0);
+    glEnd();
+
+    glColor3f(0, 1, 1);
+
+    glBegin(GL_POLYGON);
+    glVertex3f(length/8, 0, 0);
+    glVertex3f(length*2/8, width*1.2/2, 0);
+    glVertex3f(length*5/8, width*1.2/2, 0);
+    glVertex3f(length*6/8, 0, 0);
+    glEnd();
 
     glPopMatrix();
 }

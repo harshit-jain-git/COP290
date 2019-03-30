@@ -6,7 +6,8 @@ Bus::Bus(Tuple pos)
 {
     position = Tuple();
     velocity = Tuple();
-    color = Colors::getRandomColor();
+    color_1 = Colors::getRandomColor();
+    color_2 = Colors::getRandomColor();
 
     position.x = pos.x;
     position.y = pos.y;
@@ -19,7 +20,8 @@ Bus::Bus()
 {
     position = Tuple();
     velocity = Tuple();
-    color = Colors::getRandomColor();
+    color_1 = Colors::getRandomColor();
+    color_2 = Colors::getRandomColor();
 }
 
 float Bus::getXPos()
@@ -43,15 +45,21 @@ void Bus::draw()
 
     glTranslatef(position.x, position.y, 0);
 
-    glColor3f(color.x, color.y, color.z);
-    glPushMatrix();
-    // rotateY(-busAngle / 1.3);
-    glTranslatef(-0.2,0,0);
-    drawCube(length,width,0.135);
-    glColor3f(0,0.8,0.8);
-    glTranslatef(-0.02,0.02,0);
-    drawCube(length - 0.05,width/2.0,0.14);
-    glPopMatrix();
+    glColor3f(color_1.x, color_1.y, color_1.z);
+    glBegin(GL_POLYGON);
+    glVertex3f(0, -width/2, 0);
+    glVertex3f(0, width/2, 0);
+    glVertex3f(length, width/2, 0);
+    glVertex3f(length, -width/2, 0);
+    glEnd();
+
+    glColor3f(color_2.x, color_2.y, color_2.z);
+    glBegin(GL_POLYGON);
+    glVertex3f(length/15, -width/5, 0);
+    glVertex3f(length/15, width/2.5, 0);
+    glVertex3f(length*6/7, width/2.5, 0);
+    glVertex3f(length*6/7, -width/5, 0);
+    glEnd();
 
     glPopMatrix();
 }

@@ -22,8 +22,8 @@ float Truck::length;
 float Truck::width;
 float Bike::length;
 float Bike::width;
-float maxSpeed;
-float maxAcceleration;
+float Road::maxSpeed;
+float Road::maxAcceleration;
 
 void tc()
 {
@@ -85,11 +85,11 @@ void load_configuration(){
             }
             else if (str.compare("Default_MaxSpeed") == 0)
             {
-                maxSpeed = stof(ans);                
+                Road::maxSpeed = stof(ans);                
             }
             else if (str.compare("Default_Acceleration") == 0)
             {
-                maxAcceleration = stof(ans);
+                Road::maxAcceleration = stof(ans);
             }
             else if (str.compare("Vehicle_Type") == 0)
             {

@@ -38,21 +38,20 @@ void Bike::draw()
     
     glTranslatef(position.x,position.y,0);
 
-
     glBegin(GL_POLYGON);
-    glVertex3f(0,0,0);
-    glVertex3f(0,width,0);
-    glVertex3f(length,width,0);
-    glVertex3f(length,0,0);
+    glVertex3f(0,-width/2,0);
+    glVertex3f(0,width/2,0);
+    glVertex3f(length,width/2,0);
+    glVertex3f(length,-width/2,0);
     glEnd();
 
     glBegin(GL_POLYGON);
     // glVertex3f(0,0,0);
 
-    glVertex3f(0,width*2.3,0);
-    glVertex3f(length/5.0,width*2.3,0);
-    glVertex3f(length/5.0,-width*1.3,0);
-    glVertex3f(0,-width*1.3,0);
+    glVertex3f(0,width*2,0);
+    glVertex3f(length/5.0,width*2,0);
+    glVertex3f(length/5.0,-width*2,0);
+    glVertex3f(0,-width*2,0);
     glEnd();
 
     glPopMatrix();
