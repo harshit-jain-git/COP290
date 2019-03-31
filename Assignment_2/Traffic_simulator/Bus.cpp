@@ -24,21 +24,6 @@ Bus::Bus()
     color_2 = Colors::getRandomColor();
 }
 
-float Bus::getXPos()
-{
-    return position.x;
-}
-
-float Bus::getYPos()
-{
-    return position.y;
-}
-
-Tuple Bus::getPos()
-{
-    return position;
-}
-
 void Bus::draw()
 {
     glPushMatrix();

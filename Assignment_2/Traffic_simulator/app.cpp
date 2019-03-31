@@ -76,16 +76,10 @@ void display()
         vector<int> lan_index = road.cars.at(i).lane_index;
         // cout<<lan_index.at(0)<<endl;
         float min=2.0;
-        for(int k=0;k<L;k++)
-        {
-            float val = road.cars.at(i).position.x-road.lanes[lan+k].at(lan_index.at(k) - 1);
-            if(val<min)
-                min=val;
-        }
-        road.cars.at(i).dstToLight = min;
+        
         if (road.cars.at(i).dstToLight <= 0.35) road.cars.at(i).velocity.x = 0;
         else if (road.cars.at(i).dstToLight <= 0.5) road.cars.at(i).velocity.x = max(road.cars.at(i).velocity.x - Car::acceleration.x, min_velocity);
-        else if (road.cars.at(i).velocity.x < speed) road.cars.at(i).velocity.x += (Car::acceleration.x);
+        else if (road.cars.at(i).velocity.x < Car::maxSpeed) road.cars.at(i).velocity.x += (Car::acceleration.x);
 
         float velocity_x = road.cars.at(i).velocity.x;
         road.cars.at(i).position.x += (-0.005 * velocity_x);
@@ -96,19 +90,35 @@ void display()
         for(int k=0;k<L;k++)
         {
             road.lanes[lan+k].at(lan_index.at(k)) = road.cars.at(i).position.x;
-            if (flag) road.start_index[lan + k]++;
+            // if (flag) road.start_index[lan + k]++;
         }
 
-        int test_1 = check_shift(road.cars.at(i).position.x, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane - 1);
-        int test_2 = check_shift(road.cars.at(i).position.x, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane + road.cars.at(i).n_lanes);
-
-        if (test_1)
+        for(int k=0;k<L;k++)
         {
-            road.cars.at(i).lane--;
-            road.cars.at(i).position.y -= lane_width;
-            road.lanes[lan - 1].insert(road.lanes[lan - 1].begin() + test_1, road.cars.at(i).position.x);
-            road.lanes[lan + L - 1].erase(road.lanes[lan + L - 1].begin() + road.cars.at(i).lane_index.at(L - 1));
+            float val = road.cars.at(i).position.x-road.lanes[lan+k].at(lan_index.at(k) - 1);
+            if(val<min)
+                min=val;
         }
+        road.cars.at(i).dstToLight = min;
+
+        if (road.cars.at(i).dstToLight < 0.5 && !flag)
+        {
+            int test_1 = check_shift(road.lanes[lan].at(lan_index.at(0) - 1) + 0.2, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane - 1);
+            if (test_1 != -1) cout << "test_1: " << test_1 << endl;
+            // int test_2 = check_shift(road.cars.at(i).position.x, road.cars.at(i).position.x + 0.2, road.cars.at(i).lane + road.cars.at(i).n_lanes);
+            if (test_1 != -1)
+            {
+                road.cars.at(i).lane--;
+                road.cars.at(i).position.y -= lane_width;
+                road.cars.at(i).lane_index.insert(road.cars.at(i).lane_index.begin(), test_1);
+                road.cars.at(i).lane_index.pop_back();
+                cout << "Updating car position to lan: " << (lan - 1) << endl;
+                road.lanes[lan - 1].insert(road.lanes[lan - 1].begin() + test_1, road.cars.at(i).position.x);
+                road.lanes[lan + L - 1].erase(road.lanes[lan + L - 1].begin() + road.cars.at(i).lane_index.at(L - 1));
+                cout << "Updated car position" << endl;
+            }
+        }
+        
         road.cars.at(i).draw();
     }
     for (int i = 0; i < road.buses.size(); i++)
@@ -128,7 +138,7 @@ void display()
         road.buses.at(i).dstToLight=min;
         if (road.buses.at(i).dstToLight <= 0.35) road.buses.at(i).velocity.x = 0;
         else if (road.buses.at(i).dstToLight <= 0.5) road.buses.at(i).velocity.x = max(road.buses.at(i).velocity.x - Bus::acceleration.x, min_velocity);
-        else if (road.buses.at(i).velocity.x < speed) road.buses.at(i).velocity.x += (Bus::acceleration.x);
+        else if (road.buses.at(i).velocity.x < Bus::maxSpeed) road.buses.at(i).velocity.x += (Bus::acceleration.x);
 
         float velocity_x = road.buses.at(i).velocity.x;
 
@@ -156,7 +166,7 @@ void display()
         road.trucks.at(i).dstToLight=min;
         if (road.trucks.at(i).dstToLight <= 0.35) road.trucks.at(i).velocity.x = 0;
         else if (road.trucks.at(i).dstToLight <= 0.5) road.trucks.at(i).velocity.x = max(road.trucks.at(i).velocity.x - Truck::acceleration.x, min_velocity);
-        else if (road.trucks.at(i).velocity.x < speed) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
+        else if (road.trucks.at(i).velocity.x < Truck::maxSpeed) road.trucks.at(i).velocity.x += (Truck::acceleration.x);
         
         float velocity_x = road.trucks.at(i).velocity.x;
 
@@ -184,7 +194,7 @@ void display()
         road.bikes.at(i).dstToLight=min;
         if (road.bikes.at(i).dstToLight <= 0.35) road.bikes.at(i).velocity.x = 0;
         else if (road.bikes.at(i).dstToLight <= 0.5) road.bikes.at(i).velocity.x = max(road.bikes.at(i).velocity.x - Bike::acceleration.x, min_velocity);
-        else if (road.bikes.at(i).velocity.x < speed) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
+        else if (road.bikes.at(i).velocity.x < Bike::maxSpeed) road.bikes.at(i).velocity.x += (Bike::acceleration.x);
 
         float velocity_x = road.bikes.at(i).velocity.x;
 
@@ -205,7 +215,7 @@ void display()
             for(int i=0;i<Road::num_lanes;i++)
                 road.lanes[i].at(0)=-1000.0;
         }
-        cout << Road::signal << endl;
+        // cout << Road::signal << endl;
         for (int i = 0; i < Road::num_lanes; i++)
         {
             int toss = rand()%10;

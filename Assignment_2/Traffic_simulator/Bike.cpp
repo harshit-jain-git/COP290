@@ -15,21 +15,6 @@ Bike::Bike(Tuple pos)
     velocity.x = 0.9;
 }
 
-float Bike::getXPos()
-{
-    return position.x;
-}
-
-float Bike::getYPos()
-{
-    return position.y;
-}
-
-Tuple Bike::getPos()
-{
-    return position;
-}
-
 void Bike::draw()
 {
     glColor3f(color.x, color.y, color.z);

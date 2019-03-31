@@ -13,6 +13,7 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 #include "helper.h"
+#include "Vehicle.h"
 
 #define TLPOSITION -0.8
 #define lane_width 0.25

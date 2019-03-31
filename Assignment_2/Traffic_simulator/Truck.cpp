@@ -22,21 +22,6 @@ Truck::Truck()
     color = Colors::getRandomColor();
 }
 
-float Truck::getXPos()
-{
-    return position.x;
-}
-
-float Truck::getYPos()
-{
-    return position.y;
-}
-
-Tuple Truck::getPos()
-{
-    return position;
-}
-
 void Truck::draw()
 {
     glColor3f(color.x, color.y, color.z);

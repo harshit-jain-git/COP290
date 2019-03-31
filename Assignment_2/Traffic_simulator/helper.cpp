@@ -25,6 +25,11 @@ float Bike::width;
 float Road::maxSpeed;
 float Road::maxAcceleration;
 
+float Bike::maxSpeed;
+float Car::maxSpeed;
+float Bus::maxSpeed;
+float Truck::maxSpeed;
+
 void tc()
 {
     glLoadIdentity();
@@ -59,6 +64,12 @@ void load_configuration(){
     ifstream file;
     string line;
     file.open("config.txt", ios::in);
+
+    Bus::maxSpeed = 1.2;
+    Truck::maxSpeed = 1;
+    Bike::maxSpeed = 1.5;
+    Car::maxSpeed = 1.8;
+    
     while(!file.eof())
     {
         getline(file, line);

@@ -14,6 +14,7 @@ public:
     static float length;
     static float width;
     static Tuple acceleration;
+    static float maxSpeed;
 
     Tuple position;
     Tuple velocity;
@@ -27,9 +28,6 @@ public:
     Truck();
     Truck(Tuple pos);
 
-    float getXPos();
-    float getYPos();
-    Tuple getPos();
     void draw();
     void print();
 };

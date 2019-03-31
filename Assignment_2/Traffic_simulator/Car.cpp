@@ -22,21 +22,6 @@ Car::Car()
     color = Colors::getRandomColor();
 }
 
-float Car::getXPos()
-{
-    return position.x;
-}
-
-float Car::getYPos()
-{
-    return position.y;
-}
-
-Tuple Car::getPos()
-{
-    return position;
-}
-
 void drawQuad(Tuple a, Tuple b, Tuple c, Tuple d)
 {
     glVertex3f(a.x, a.y, a.z);
