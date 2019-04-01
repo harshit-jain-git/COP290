@@ -11,27 +11,27 @@ Default_Acceleration = 0.01
 # 3. Define params for specific vehicle types
 Vehicle_Type = Car
 Vehicle_Length = 4
-Vehicle_Width = 2
+Vehicle_Width = 3
 Vehicle_MaxSpeed = 1.8
 
 Vehicle_Type = Bike
-Vehicle_Length = 2
+Vehicle_Length = 1
 Vehicle_Width = 1
 Vehicle_MaxSpeed = 1.5
 
 Vehicle_Type = Bus
 Vehicle_Length = 4
-Vehicle_Width = 2
+Vehicle_Width = 3
 Vehicle_MaxSpeed = 1.2
 
 Vehicle_Type = Truck
 Vehicle_Length = 4
-Vehicle_Width = 2
+Vehicle_Width = 3
 Vehicle_MaxSpeed = 1
 
 Vehicle_Type = Auto
-Vehicle_Length = 2
-Vehicle_Width = 1
+Vehicle_Length = 3
+Vehicle_Width = 2
 Vehicle_MaxSpeed = 1
 
 # Definitions over
@@ -54,7 +54,6 @@ Car GREEN
 bike BLUE
 Truck GREEN
 Bus BLUE
-Auto BLUE
 
 # Turn the signal green
 Signal GREEN

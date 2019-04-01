@@ -14,7 +14,7 @@
 using namespace std;
 
 float roadColor;
-int v_l[5]; //lanes taken by ith vehicle  0: car   1:bus   2:truck    3:bike
+int v_l[5]; //lanes taken by ith vehicle  0: car   1:bus   2:truck    3:bike    4: auto
 
 time_t startTime;
 time_t timer;
@@ -30,6 +30,12 @@ Tuple Truck::acceleration = Tuple(0.01, 0, 0);
 Tuple Bus::acceleration = Tuple(0.01, 0, 0);
 Tuple Auto::acceleration = Tuple(0.01, 0, 0);
 
+int Bus::count_per_sec;
+int Car::count_per_sec;
+int Bike::count_per_sec;
+int Truck::count_per_sec;
+int Auto::count_per_sec;
+
 int car_l;
 int car_w;
 int bus_l;
@@ -40,6 +46,12 @@ int bike_l;
 int bike_w;
 int auto_l;
 int auto_w;
+
+int bus_count;
+int car_count;
+int bike_count;
+int truck_count;
+int auto_count;
 
 void error_callback(int error, const char *description)
 {
@@ -147,8 +159,8 @@ void display()
 
         if (road.autos.at(i).dstToLight < 0.5 && !flag)
         {
-            int test_1 = check_shift(road.lanes[lan].at(lan_index.at(0) - 1), road.autos.at(i).position.x + 0.2, road.autos.at(i).lane - 1);
-            int test_2 = check_shift(road.lanes[lan].at(lan_index.at(0) - 1), road.autos.at(i).position.x + 0.2, road.autos.at(i).lane + L);
+            int test_1 = check_shift(road.autos.at(i).position.x - road.autos.at(i).dstToLight, road.autos.at(i).position.x + 0.2, road.autos.at(i).lane - 1);
+            int test_2 = check_shift(road.autos.at(i).position.x - road.autos.at(i).dstToLight, road.autos.at(i).position.x + 0.2, road.autos.at(i).lane + L);
             if (test_1 != -1)
             {
                 int check_index = road.autos.at(i).lane_index.back();
@@ -392,8 +404,8 @@ void display()
 
         if (road.bikes.at(i).dstToLight < 0.5 && !flag)
         {
-            int test_1 = check_shift(road.lanes[lan].at(lan_index.at(0) - 1), road.bikes.at(i).position.x + 0.2, road.bikes.at(i).lane - 1);
-            int test_2 = check_shift(road.lanes[lan].at(lan_index.at(0) - 1), road.bikes.at(i).position.x + 0.2, road.bikes.at(i).lane + L);
+            int test_1 = check_shift(road.bikes.at(i).position.x - road.bikes.at(i).dstToLight, road.bikes.at(i).position.x + 0.2, road.bikes.at(i).lane - 1);
+            int test_2 = check_shift(road.bikes.at(i).position.x - road.bikes.at(i).dstToLight, road.bikes.at(i).position.x + 0.2, road.bikes.at(i).lane + L);
             if (test_1 != -1)
             {
                 int check_index = road.bikes.at(i).lane_index.back();
@@ -696,6 +708,7 @@ void display()
     {
         time(&startTime);
         Road::signal--;
+        bike_count = car_count = bus_count = truck_count = auto_count = 0;
         if (Road::signal <= 0)
         {
             for (int i = 0; i < Road::num_lanes; i++)
@@ -704,13 +717,12 @@ void display()
         // cout << Road::signal << endl;
         for (int i = 0; i < Road::num_lanes; i++)
         {
-            int toss = rand() % 15;
+            int toss = rand() % 10;
             if (toss > 4)
                 continue;
 
             int L = v_l[toss];
-            // cout<<L<<endl;
-            // cout<<Road::num_lanes-i<<endl;
+            
             float temp = -Road::width + (lane_width * L) / 2.0 + lane_width * i;
             Tuple pos = Tuple(1, temp, 0);
             if (Road::num_lanes - i < L)
@@ -722,7 +734,9 @@ void display()
             }
             if (toss == 0)
             {
-                // pos.x = 1 + Car::length/2.0;
+                if (Road::signal > 0 && car_count >= Car::count_per_sec) continue;
+                car_count++;
+
                 Car car = Car(pos);
                 car.lane = i;
                 car.n_lanes = L;
@@ -736,7 +750,9 @@ void display()
             }
             else if (toss == 1)
             {
-                // pos.x = 1 + Bus::length/2.0;
+                if (Road::signal > 0 && bus_count >= Bus::count_per_sec) continue;
+                bus_count++;
+                
                 Bus bus = Bus(pos);
                 bus.lane = i;
                 bus.n_lanes = L;
@@ -750,7 +766,9 @@ void display()
             }
             else if (toss == 2)
             {
-                // pos.x = 1 + Truck::length/2.0;
+                if (Road::signal > 0 && truck_count >= Truck::count_per_sec) continue;
+                truck_count++;
+                
                 Truck truck = Truck(pos);
                 truck.lane = i;
                 truck.n_lanes = L;
@@ -764,7 +782,9 @@ void display()
             }
             else if (toss == 3)
             {
-                // pos.x = 1 + Bike::length/2.0;
+                if (Road::signal > 0 && bike_count >= Bike::count_per_sec) continue;
+                bike_count++;
+                
                 Bike bike = Bike(pos);
                 bike.lane = i;
                 bike.n_lanes = L;
@@ -778,7 +798,9 @@ void display()
             }
             else if (toss == 4)
             {
-                // pos.x = 1 + Bike::length/2.0;
+                if (Road::signal > 0 && auto_count >= Auto::count_per_sec) continue;
+                auto_count++;
+                
                 Auto auto1 = Auto(pos);
                 auto1.lane = i;
                 auto1.n_lanes = L;
@@ -790,7 +812,6 @@ void display()
                 }
                 road.autos.push_back(auto1);
             }
-        // count[i]++;
         exit_loop:
             continue;
         }

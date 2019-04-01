@@ -15,6 +15,7 @@ public:
     static float width;
     static Tuple acceleration;
     static float maxSpeed;
+    static int count_per_sec;
 
     Tuple position;
     Tuple velocity;

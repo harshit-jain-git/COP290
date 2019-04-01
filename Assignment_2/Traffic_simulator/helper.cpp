@@ -192,7 +192,28 @@ void load_configuration(){
                 }
             }            
         }
-        cout << line << endl;
+        else 
+        {
+            int p = line.find(" ");
+            if (p < line.size())
+            {
+                string str = line.substr(0, p);
+                string ans = line.substr(p + 1);
+                cout << str << endl;
+                if (str.compare("Pass") == 0) break;
+                else if (str.compare("Car") == 0)
+                    Car::count_per_sec++;
+                else if (str.compare("bike") == 0)
+                    Bike::count_per_sec++;
+                else if (str.compare("Bus") == 0)
+                    Bus::count_per_sec++;
+                else if (str.compare("Truck") == 0)
+                    Truck::count_per_sec++;
+                else if (str.compare("Auto") == 0)
+                    Auto::count_per_sec++;                
+            }
+            cout << line << endl;
+        }
     }
     Road::num_lanes = (int)(2*Road::width/lane_width);
     int length = (int)(2*Road::width/0.05);
@@ -200,7 +221,5 @@ void load_configuration(){
     Road::console = new char*[length];
     for (int i = 0; i < length; i++)
         Road::console[i] = new char[40];
-
-    cout << Road::num_lanes << endl;
     return;
 }
