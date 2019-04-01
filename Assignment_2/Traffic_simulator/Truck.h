@@ -4,8 +4,8 @@
 #include "Tuple.h"
 #include "Colors.h"
 #include "graphics.h"
-#include "Vehicle.h"
 #include <GLFW/glfw3.h>
+
 using namespace std;
 
 class Truck 

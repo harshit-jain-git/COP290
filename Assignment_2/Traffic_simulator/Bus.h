@@ -5,7 +5,7 @@
 #include "Colors.h"
 #include "graphics.h"
 #include <GLFW/glfw3.h>
-#include "Vehicle.h"
+
 using namespace std;
 
 class Bus

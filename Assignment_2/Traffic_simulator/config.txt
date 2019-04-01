@@ -10,22 +10,29 @@ Default_Acceleration = 0.01
 
 # 3. Define params for specific vehicle types
 Vehicle_Type = Car
-Vehicle_Length = 0.2
-Vehicle_Width = 0.1
-Vehicle_MaxSpeed = 1
-Vehicle_Acceleration = 1
+Vehicle_Length = 4
+Vehicle_Width = 2
+Vehicle_MaxSpeed = 1.8
 
 Vehicle_Type = Bike
-Vehicle_Length = 0.05
-Vehicle_Width = 0.1
+Vehicle_Length = 2
+Vehicle_Width = 1
+Vehicle_MaxSpeed = 1.5
 
 Vehicle_Type = Bus
-Vehicle_Length = 0.15
-Vehicle_Width = 0.10
+Vehicle_Length = 4
+Vehicle_Width = 2
+Vehicle_MaxSpeed = 1.2
 
 Vehicle_Type = Truck
-Vehicle_Length = 0.2
-Vehicle_Width = 0.1
+Vehicle_Length = 4
+Vehicle_Width = 2
+Vehicle_MaxSpeed = 1
+
+Vehicle_Type = Auto
+Vehicle_Length = 2
+Vehicle_Width = 1
+Vehicle_MaxSpeed = 1
 
 # Definitions over
 # 4. Start the simulation
@@ -38,6 +45,7 @@ Car GREEN
 bike BLUE
 bike GREEN
 Bus BLUE
+Auto BLUE
 
 Pass 15				# Let the simulation keep running for 15 seconds
 
@@ -46,6 +54,7 @@ Car GREEN
 bike BLUE
 Truck GREEN
 Bus BLUE
+Auto BLUE
 
 # Turn the signal green
 Signal GREEN

@@ -1,14 +1,13 @@
-#ifndef BIKE_H
-#define BIKE_H
+#ifndef AUTO_H
+#define AUTO_H
 
 #include "Tuple.h"
 #include "Colors.h"
 #include "graphics.h"
 #include <GLFW/glfw3.h>
-
 using namespace std;
 
-class Bike
+class Auto
 {
 public:
     static float length;
@@ -20,6 +19,7 @@ public:
     Tuple velocity;
     
     Tuple color;
+    Tuple color2;
     
     int lane;
     int n_lanes;
@@ -27,8 +27,8 @@ public:
 
     vector<int> lane_index;    
 
-    Bike();
-    Bike(Tuple pos);
+    Auto();
+    Auto(Tuple pos);
 
     void draw();
     void print();

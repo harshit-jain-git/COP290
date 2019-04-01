@@ -13,10 +13,10 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 #include "helper.h"
-#include "Vehicle.h"
+#include "Auto.h"
 
 #define TLPOSITION -0.8
-#define lane_width 0.025
+#define lane_width 0.05
 
 class Road
 {
@@ -35,8 +35,12 @@ public:
     vector<Bus> buses;
     vector<Truck> trucks;
     vector<Bike> bikes;
+    vector<Auto> autos;
     vector<float>*  lanes;
     int* start_index;
+    static int rows;
+
+    static char** console;
 
     Road();
     void draw();
