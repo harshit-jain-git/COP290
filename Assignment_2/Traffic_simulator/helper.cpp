@@ -157,5 +157,6 @@ void load_configuration(){
         cout << line << endl;
     }
     Road::num_lanes = (int)(2*Road::width/lane_width);
+    cout << Road::num_lanes << endl;
     return;
 }

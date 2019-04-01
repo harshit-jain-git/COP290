@@ -55,11 +55,11 @@ void Road::draw()
     // glVertex3f(0.9, 0.025, 0);
     // glVertex3f(0.9, -0.025, 0);
     // glEnd();
-
+    int l = (2*width/0.2);
     glTranslatef(0, -width, 0);
-    for (int i = 1; i < num_lanes; i++)
+    for (int i = 1; i < l; i++)
     {        
-        glTranslatef(0, lane_width, 0);
+        glTranslatef(0, 0.2, 0);
         glBegin(GL_LINES);
         glColor3f(0.3, 0.3, 0.3);
         glVertex3f(-0.8, 0, 0);

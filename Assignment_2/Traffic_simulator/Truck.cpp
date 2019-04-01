@@ -32,17 +32,17 @@ void Truck::draw()
     glTranslatef(position.x,position.y,0);
     glBegin(GL_POLYGON);
     glVertex3f(0, 0, 0);
-    glVertex3f(0, width, 0);
-    glVertex3f(length, width, 0);
+    glVertex3f(0, width*0.7, 0);
+    glVertex3f(length, width*0.7, 0);
     glVertex3f(length, 0, 0);
     glEnd();
 
     //Top Part
     glBegin(GL_POLYGON);
-    glVertex3f(0.02, width, 0);
-    glVertex3f(0.02, width + 0.05, 0);
-    glVertex3f(0.01, width + 0.05, 0);
-    glVertex3f(0, width, 0);
+    glVertex3f(length*0.2, width*0.7, 0);
+    glVertex3f(length*0.2, width, 0);
+    glVertex3f(length*0.1, width, 0);
+    glVertex3f(0, width*0.7, 0);
     glEnd();
     glPopMatrix();
     return;

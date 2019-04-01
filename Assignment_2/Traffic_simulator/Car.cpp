@@ -38,18 +38,18 @@ void Car::draw()
     glColor3f(color.x, color.y, color.z);
 
     glBegin(GL_POLYGON);
-    glVertex3f(0, -width/2, 0);
+    glVertex3f(0, -width*0.4, 0);
     glVertex3f(0, 0, 0);
     glVertex3f(length, 0, 0);
-    glVertex3f(length, -width/2, 0);
+    glVertex3f(length, -width*0.4, 0);
     glEnd();
 
     glColor3f(0, 1, 1);
 
     glBegin(GL_POLYGON);
     glVertex3f(length/8, 0, 0);
-    glVertex3f(length*2/8, width*1.2/2, 0);
-    glVertex3f(length*5/8, width*1.2/2, 0);
+    glVertex3f(length*2/8, width*0.5, 0);
+    glVertex3f(length*5/8, width*0.5, 0);
     glVertex3f(length*6/8, 0, 0);
     glEnd();
 

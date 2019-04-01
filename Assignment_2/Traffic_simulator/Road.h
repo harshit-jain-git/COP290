@@ -16,7 +16,7 @@
 #include "Vehicle.h"
 
 #define TLPOSITION -0.8
-#define lane_width 0.25
+#define lane_width 0.025
 
 class Road
 {

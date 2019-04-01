@@ -1,7 +1,7 @@
 # 1. Define Road Parameters
 Road_Id = 1
 Road_Length = 1
-Road_Width = 0.5
+Road_Width = 0.75
 Road_Signal = 15
 
 # 2. Define default params for all vehicle types
@@ -16,12 +16,12 @@ Vehicle_MaxSpeed = 1
 Vehicle_Acceleration = 1
 
 Vehicle_Type = Bike
-Vehicle_Length = 0.1
-Vehicle_Width = 0.05
+Vehicle_Length = 0.05
+Vehicle_Width = 0.1
 
 Vehicle_Type = Bus
-Vehicle_Length = 0.3
-Vehicle_Width = 0.20
+Vehicle_Length = 0.15
+Vehicle_Width = 0.10
 
 Vehicle_Type = Truck
 Vehicle_Length = 0.2
